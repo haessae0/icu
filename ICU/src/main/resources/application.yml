@@ -8,27 +8,24 @@ server:
       enabled: true
       force: true
 
-#spring.main.allow-bean-definition-overriding: true
-#spring:
-#  servlet:
-#    multipart:
-#      location: C:/ItStudy/img
-#      max-file-size: 100MB
-#      max-request-size: 100MB
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Seoul
-#    username: minsu
-#    password: 'haessae0'
-#
-#  jpa:
-#    database-platform: org.hibernate.dialect.MySQL8Dialect
-#    hibernate:
-#      ddl-auto: update #create update none
-#      naming:
-#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-#    show-sql: true
-#
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/icu?serverTimezone=Asia/Seoul
+    username: minsu
+    password: 'haessae0'
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create #create update none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+
+  main:
+    allow-bean-definition-overriding: true
+
 #jwt:
 #  header: Authorization
 #  #HS512 ????? ??? ??? ??? 512bit, ? 64byte ??? secret key? ???? ??.
