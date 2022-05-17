@@ -1,10 +1,19 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view />
+    <nav-bar/>
+    <template v-if="userRole === 'ROLE_STUDENT'">
+      <aside-menu :menu="student_menu" @menu-click="menuClick"/>
+    </template>
+    <template v-else-if="userRole === 'ROLE_INSTRUCTOR'">
+      <aside-menu :menu="instructor_menu" @menu-click="menuClick"/>
+    </template>
+    <template v-else>
+      <aside-menu :menu="menu" @menu-click="menuClick"/>
+    </template>
+    <transition name="page">
+      <router-view></router-view>
+    </transition>
+    <footer-bar/>
   </div>
 </template>
 
