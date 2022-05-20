@@ -12,8 +12,9 @@ app = Flask(__name__)
 conn = pymysql.connect(host='localhost',user='root',password='root',db='ex1',charset='utf8')
 
 v_camera = None
-global_frame = None
+g_frame = None
 t_list = None
+
 userid = None
 testnum = None
 
@@ -22,17 +23,16 @@ status = 'true'
 # @ : 장식자를 의미하며 URL 연결에 사용
 @app.route('/<input_name>/<input_testnum>')
 def index(input_name, input_testnum):
-
+    
+    global userid
+    global testnum
+    userid = input_name;
+    testnum = input_testnum;
     # 쿼리문 실행
     global conn
 
     query = conn.curssor()
     query.execute("SELECT * FROM testproblem where exam_num = %s", input_testnum)
-
-    global userid
-    global testnum
-    userid = input_name;
-    testnum = input_testnum;
 
     # fetchall() : 레코드를 배열 형식으로 저장
     f_data = query.fetchall()
@@ -42,13 +42,13 @@ def index(input_name, input_testnum):
     
     for problem in f_data:
       
-        prob_list = problem[5].split('/')
+        p_list = problem[5].split('/')
 
         p_list.append([])
-        p_list[index].append(prob_list[0]) # 문제보기 0
-        p_list[index].append(prob_list[1]) # 문제보기 1
-        p_list[index].append(prob_list[2]) # 문제보기 2
-        p_list[index].append(prob_list[3]) # 문제보기 3
+        p_list[index].append(p_list[0]) # 문제보기 0
+        p_list[index].append(p_list[1]) # 문제보기 1
+        p_list[index].append(p_list[2]) # 문제보기 2
+        p_list[index].append(p_list[3]) # 문제보기 3
         p_list[index].append(problem[2]) # 문제 및 답
         p_list[index].append(problem[4]) # 문제 및 답
         
@@ -102,19 +102,20 @@ def status():
                 print(Exception)
                 conn.rollback()    
                 conn.close()
-            return jsonify(result="finished")
+            return jsonify(result="Complete")
 
-@app.route('/video_viewer')
-def video_viewer():
-    return Response(video_stream(),
+@app.route('/v_viwer')
+def v_viwer():
+    return Response(v_stream(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-def video_stream(): # 좌측 하단 규격
+def v_stream(): # 좌측 하단 규격
     global v_camera 
-    global global_frame
+    global g_frame
     global t_list
 
     start_time = time.time()
+  
     t_list = list()
 
     if v_camera == None:
@@ -125,12 +126,12 @@ def video_stream(): # 좌측 하단 규격
     while True:
         frame = v_camera.get_frame()
         if frame != None:
-            global_frame = frame
+            g_frame = frame
             yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         else:
             yield (b'--frame\r\n'
-                            b'Content-Type: image/jpeg\r\n\r\n' + global_frame + b'\r\n\r\n')
+                            b'Content-Type: image/jpeg\r\n\r\n' + g_frame + b'\r\n\r\n')
 
 
 # 메인 함수 선언(시작)
