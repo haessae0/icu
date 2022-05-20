@@ -1,0 +1,176 @@
+<DOCTYPE html>
+  <html>
+  <head>
+    <title>비디오 스트리밍</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico"/>
+    <meta charset='utf-8' />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+  </head>
+  <body>
+    <!-- 헤더 네비게이션 -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <p class="title is-5">EDUCARE</p>
+          <!-- <img src="../assets/flasklogo.png" width="112" height="28"> -->
+        </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      </div>
+    </nav>
+    <div id="app" class="container pt-3 mt-3">
+      <h1 class="title pt-3">시험보기</h1>
+      <!-- Buefy components goes here -->
+      <p class="has-text-right" id="timer"></p>
+      <div class="tile is-ancestor">
+      <div class="tile is-4 is-vertical is-parent">
+        <div class="tile is-child box">
+          <p class="title is-5">시험 녹화</p>
+        </br>
+          <p>시험이 시작될때 녹화시작 먼저 클릭한 후 시험을 완료 후 시험완료를 클릭하면 감독관에게 전송됩니다. </p>
+      </br>
+          <div id="recorder">
+            <b-button id="stop">시험완료</b-button>
+            <a id="download"></a>
+            <script id="data" type="application/javascript" src="{{ url_for('static', filename='recorder.js') }}">
+            </script>      
+          </br>
+            <b-field label="녹화영상">
+              <input
+                v-model="form.file"
+                type="file"
+                id="file"
+                ref="file"
+                v-on:change="handleFileUpload()"
+              />
+            </b-field>
+          </div>
+        </br>
+          <img id="video" src="{{ url_for('video_viewer') }}">
+        </div>
+      </div>
+      <div class="tile is-parent">
+        <div class="tile is-child box">
+          <p class="title is-5">시험 문제</p>
+          <br>
+          {% for element in data_list %}
+          <br>
+          <p>< 문제 {{element[0]}}번 ></p>
+          <p>{{element[1]}}</p>
+          <br>
+          <div class ="block">
+            <b-field>
+              <b-radio name="{{element[0]}}+'-1'" v-model="form.testAnswer[{{element[0]}}-1]" native-value="1">
+            {{element[2][0:]}}
+            </b-radio>
+            </b-field>
+            <b-field>
+              <b-radio name="{{element[0]}}+'-2'" v-model="form.testAnswer[{{element[0]}}-1]" native-value="2">
+            {{element[3][0:]}}
+          </b-radio>
+          </b-field>
+          <b-field>
+            <b-radio name="{{element[0]}}+'-3'" v-model="form.testAnswer[{{element[0]}}-1]" native-value="3">
+            {{element[4][0:]}}
+          </b-radio>
+          </b-field>
+          <b-field>
+            <b-radio name="{{element[0]}}+'-4'" v-model="form.testAnswer[{{element[0]}}-1]" native-value="4">
+            {{element[5][0:]}}
+          </b-radio>
+        </b-field>
+          </div>
+           
+        {% endfor %}
+          <br>
+
+        
+        </br>
+          <b-button @click="submit()">답안제출</b-button>
+        </div>
+      </div> 
+    </div>
+  <script>
+    var startTime = '{{start_time}}';
+    var endTime = '{{end_time}}';
+    var countDownDate = new Date(endTime).getTime();
+
+    var x = setInterval(function() {
+    
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("timer").innerHTML = days + "d " + hours + "h "
+      + minutes + "m " + seconds + "s ";
+      
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("timer").innerHTML = "EXPIRED";
+        location.href = `http://localhost:8081/completetest`
+      }
+    }, 1000);
+
+  const vueApp = new Vue({
+    el: '#app',
+    //axios 들어가기 form data post로 보내고, get으로 문제 출력하고, 영상 파일에 관련된거 입력하고
+    //spring boot post json key-> answer, 문제, 
+    data: { 
+      form: {
+        username : '{{user_name}}',
+        testAnswer: [],
+        testStatus: 'C',
+         testNum:'{{test_num}}',
+        // radio: "",
+      },
+      
+    },
+    methods: {
+      handleFileUpload() {
+        this.file = this.$refs.file.files[0];
+        //tempfile = new FileReader();
+        //tempfile = tempfile.readAsArrayBuffer();
+        //this.file = tempfile;
+      },
+      submit() {
+        let formData = new FormData();
+        formData.append("username", this.form.username);
+        formData.append("testAnswer", this.form.testAnswer);
+        formData.append("testStatus", this.form.testStatus);
+        formData.append("testNum", this.form.testNum);
+        formData.append("file", this.file);
+
+        axios.put("http://localhost:8000/stutest/update-mytest",  formData, {
+
+          headers: {
+            "Content-Type": `multipart/form-data`,
+            "Access-Control-Allow-Origin": "*"
+          }
+        })  
+        .then((res) => {
+          alert("답안,영상,부정행위 시간 보내기 성공")
+          console.log(res);
+          location.href = `http://localhost:8081/completetest`
+        })
+        .catch(error => {
+          alert("답안,영상,부정행위 시간 보내기 실패");
+          console.log(error);
+        });
+      }
+    }
+})
+
+  </script>
+  </body>
+  </html>
