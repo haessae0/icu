@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <nav-bar/>
-    <template v-if="userRole === 'ROLE_STUDENT'">
+    <template v-if="userRole === 'rSTUDENT'">
       <aside-menu :menu="student_menu" @menu-click="menuClick"/>
     </template>
-    <template v-else-if="userRole === 'ROLE_INSTRUCTOR'">
+    <template v-else-if="userRole === 'rINSTRUCTOR'">
       <aside-menu :menu="instructor_menu" @menu-click="menuClick"/>
     </template>
     <template v-else>
@@ -17,25 +17,155 @@
   </div>
 </template>
 
+<script>
+// @ is an alias to /src
+import NavBar from "@/components/NavBar";
+import AsideMenu from "@/components/AsideMenu";
+import FooterBar from "@/components/FooterBar";
+import {mapState} from "vuex";
+import {getUserRoleFromSession} from "@/utils/session";
+
+export default {
+  name: "home",
+  components: {
+    FooterBar,
+    AsideMenu,
+    NavBar
+  },
+  data() {
+    return {
+      userRole: getUserRoleFromSession() || ""
+    };
+  },
+  computed: {
+    ...mapState(["userId", "userRole"]),
+    menu() {
+      return [
+        "프로필",
+        [
+          {
+            to: "/profile",
+            icon: "account-circle",
+            label: "마이 프로필"
+          }
+        ],
+        "메뉴",
+        [
+          {
+            label: "시험",
+            //submenu가 강사와 어드민 학생에 따라 다르게 나와야함
+            subLabel: "Submenus Example",
+            icon: "view-list",
+            menu: []
+          }
+        ],
+        "HOME",
+        [
+          {
+            href: "/",
+            label: "서비스 소개",
+            icon: "help-circle"
+          }
+        ]
+      ];
+    },
+    student_menu() {
+      return [
+        "프로필",
+        [
+          {
+            to: "/profile",
+            icon: "account-circle",
+            label: "마이 프로필"
+          }
+        ],
+        "메뉴",
+        [
+          {
+            label: "시험",
+            //submenu가 강사와 어드민 학생에 따라 다르게 나와야함
+            subLabel: "Submenus Example",
+            icon: "view-list",
+            menu: [
+              {
+                href: "/student",
+                label: "시험보기"
+              }
+            ]
+          }
+        ],
+        "HOME",
+        [
+          {
+            href: "/",
+            label: "서비스 소개",
+            icon: "help-circle"
+          }
+        ]
+      ];
+    },
+    instructor_menu() {
+      return [
+        "프로필",
+        [
+          {
+            to: "/profile",
+            icon: "account-circle",
+            label: "마이 프로필"
+          }
+        ],
+        "메뉴",
+        [
+          {
+            label: "시험",
+            //submenu가 강사와 어드민 학생에 따라 다르게 나와야함
+            subLabel: "Submenus Example",
+            icon: "view-list",
+            menu: [
+              {
+                href: "/instructor",
+                label: "시험 감독"
+              }
+            ]
+          }
+        ],
+        "HOME",
+        [
+          {
+            href: "/",
+            label: "서비스 소개",
+            icon: "help-circle"
+          }
+        ]
+      ];
+    }
+  },
+  created() {
+    this.$store.commit("user", {
+      name: "",
+      email: "",
+      avatar: ""
+    });
+  },
+  methods: {
+    menuClick(item) {
+      if (item.action && item.action === "dark-mode-toggle") {
+        this.$store.commit("darkModeToggle");
+      }
+    }
+  }
+};
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+/* Router Transition - 페이지 전환이 부드럽게 하기 위함 (부드러운 페이지 이동) */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.5s;
 }
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+.page-enter, .page-leave-to /* .page-leave-active below version 2.1.8 */
+{
+  opacity: 0;
 }
 </style>
