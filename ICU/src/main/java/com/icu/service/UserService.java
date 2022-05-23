@@ -2,6 +2,7 @@ package com.icu.service;
 
 import com.icu.web.dto.LoginDto;
 import com.icu.web.dto.UserDto;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,25 +11,26 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface UserService {
-    Boolean insertUser(UserDto userDto, MultipartFile multipartFile);
 
-    Boolean insertUserWithoutImage(UserDto userDto);
+    public Boolean insertUser(UserDto userDto, MultipartFile multipartFile);
 
-    ResponseEntity<UserDto> login(LoginDto loginDto, HttpServletResponse httpServletResponse);
+    public Boolean insertUserWithoutImage(UserDto userDto);
 
-    Boolean logout(HttpServletRequest httpServletRequest);
+    public ResponseEntity<UserDto> login(LoginDto loginDto, HttpServletResponse httpServletResponse);
 
-    UserDto getUser(String username);
+    public Boolean logout(HttpServletRequest httpServletRequest);
 
-    UserDto getStudent(String username);
+    public UserDto getUser(String username);
 
-    List<UserDto> getStudentList();
+    public UserDto getStudent(String username);
 
-    List<UserDto> getStudentListNotInTest(long examNumber);
+    public List<UserDto> getStudentList();
 
-    Boolean updateUser(UserDto userDto, MultipartFile multipartFile);
+    public List<UserDto> getStudentListNotInTest(long examNumber);
 
-    Boolean updateUserWithoutImage(UserDto userDto);
+    public Boolean updateUser(UserDto userDto, MultipartFile multipartFile);
 
-    Boolean deleteUser(String username);
+    public Boolean updateUserWithoutImage(UserDto userDto);
+
+    public Boolean deleteUser(String username);
 }

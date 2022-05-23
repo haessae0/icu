@@ -1,5 +1,4 @@
-package com.icu.util.token;
-
+package com.icu.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -16,14 +15,20 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider implements InitializingBean {
 
-    public static final String AUTHORITIES_KEY = "auth";
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
+
+    public static final String AUTHORITIES_KEY = "auth";
+
     private final String secret;
 
     private final long tokenValidityInMilliseconds;
@@ -31,7 +36,7 @@ public class TokenProvider implements InitializingBean {
     private Key key;
 
     public TokenProvider(@Value("${jwt.secret}") String secret,
-                         @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
@@ -42,6 +47,7 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+    // Authentication 객체에 포함되어 있는 아이디와 권한 정보를 담은 토큰을 생성
     public String createToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -59,6 +65,7 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
+    // 토큰에 담겨있는 권한 정보들을 이용해 Authentication 객체를 리턴
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 
@@ -71,10 +78,13 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
+    // 토큰을 검증하는 역할을 수행
     public boolean validateToken(String token) {
         try {
             JwsHeader header = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getHeader();
+            // 헤더 값으로 1차 검증
             if (header.get("com").equals("ICU") && header.get("alg").equals("HS512")) {
+                // 2차 검증
                 Jwts.parser().setSigningKey(key).parseClaimsJws(token);
                 return true;
             }

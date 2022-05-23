@@ -4,8 +4,8 @@ import com.icu.domain.user.Instructor;
 import com.icu.domain.user.Student;
 import com.icu.domain.user.User;
 import com.icu.domain.user.UserRepository;
-import com.icu.util.token.JwtFilter;
-import com.icu.util.token.TokenProvider;
+import com.icu.jwt.JwtFilter;
+import com.icu.jwt.TokenProvider;
 import com.icu.web.dto.LoginDto;
 import com.icu.web.dto.UserDto;
 import org.slf4j.Logger;
@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider,
+            AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
@@ -56,7 +57,8 @@ public class UserServiceImpl implements UserService {
 
                 try {
                     userimg = System.currentTimeMillis() + multipartFile.getOriginalFilename();
-                    multipartFile.transferTo(new File(System.getProperty("user.dir") + "\\src\\main\\webapp\\userimg\\" + userimg));
+                    multipartFile.transferTo(
+                            new File(System.getProperty("user.dir") + "\\src\\main\\webapp\\userimg\\" + userimg));
                     logger.info("{} 이미지 등록 성공", userDto.getUsername());
                 } catch (IllegalStateException | IOException exception) {
                     exception.printStackTrace();
@@ -331,6 +333,5 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
-
 
 }
