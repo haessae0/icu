@@ -9,12 +9,12 @@ const config = {
 
 //회원 이미지 파일 가져오기
 function fetchUserInfo() {
-  const userId = getUserIdFromSession();
+  const username = getUserIdFromSession();
   let instance = axios.create();
   instance.defaults.headers.common["Authorization"] = sessionStorage.getItem(
     "Authorization"
   );
-  return instance.get(`${config.baseUrl}user/myinfo?userId=${userId}`);
+  return instance.get(`${config.baseUrl}user/myinfo?username=${username}`);
 }
 
 // 회원가입 API

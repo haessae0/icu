@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -12,27 +12,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExamDto {
+    @NotNull
+    @Size(min = 8, max = 50)
+    private long examNumber;
 
     @NotNull
-    @Size(max = 50)
-    private long examId;
+    @Size(min = 8, max = 50)
+    private String examName;
 
     @NotNull
-    @Size(max = 20)
-    private int examNum;
+    @Size(min = 2, max = 50)
+    private LocalDateTime openTime;
 
     @NotNull
-    @Size(min = 5)
-    private String examQuestion;
+    @Size(min = 2, max = 50)
+    private LocalDateTime closeTime;
 
-    @NotNull
-    @Size(min = 2)
-    private List<String> examSelection;
-
-    @NotNull
-    @Size(min = 2, max = 100)
-    private String examDesImage;
-
-    @Size(min = 1, max = 50)
-    private String examAnswer;
+    @Size(min = 2, max = 255)
+    private String examDescribe;
 }

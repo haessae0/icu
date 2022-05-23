@@ -6,9 +6,9 @@
           <br/>
           <b-field align="left" label="ID" message="" type="">
             <b-input
-                v-model="userId"
+                v-model="username"
                 maxlength="30"
-                placeholder="2XXXXXXX"
+                placeholder="2XXXXXXX@daegu.ac.kr"
                 size="is-medium"
             ></b-input>
           </b-field>
@@ -27,7 +27,7 @@
           <br/>
           <b-field align="left" label="이름" message="" type="">
             <b-input
-                v-model="name"
+                v-model="fullname"
                 maxlength="30"
                 placeholder="이름"
                 size="is-medium"
@@ -82,11 +82,11 @@ export default {
   name: "SignUpForm",
   data() {
     return {
-      userId: "",
+      username: "",
       password: "",
-      name: "",
+      fullname: "",
       phoneNumber: "",
-      profileImage: "",
+      userImage: "",
       role: "",
       memberagree: false
     };
@@ -94,9 +94,9 @@ export default {
   methods: {
     submitForm() {
       let formData = new FormData();
-      formData.append("userId", this.userId);
+      formData.append("username", this.username);
       formData.append("password", this.password);
-      formData.append("name", this.name);
+      formData.append("fullname", this.fullname);
       formData.append("phoneNumber", this.phoneNumber);
       formData.append("file", this.file);
       formData.append("role", this.role);
@@ -121,11 +121,11 @@ export default {
           });
     },
     initForm() {
-      this.userId = "";
+      this.username = "";
       this.password = "";
-      this.name = "";
+      this.fullname = "";
       this.phoneNumber = "";
-      this.profileImage = "";
+      this.userIamge = "";
       this.role = "";
     },
     handleFileUpload() {

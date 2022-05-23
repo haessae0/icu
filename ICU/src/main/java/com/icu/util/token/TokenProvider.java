@@ -42,7 +42,6 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // Authentication 객체에 포함되어 있는 아이디와 권한 정보를 담은 토큰을 생성
     public String createToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -60,7 +59,6 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
-    // 토큰에 담겨있는 권한 정보들을 이용해 Authentication 객체를 리턴
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 
@@ -73,13 +71,10 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    // 토큰을 검증하는 역할을 수행
     public boolean validateToken(String token) {
         try {
             JwsHeader header = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getHeader();
-            // 헤더 값으로 1차 검증
             if (header.get("com").equals("ICU") && header.get("alg").equals("HS512")) {
-                // 2차 검증
                 Jwts.parser().setSigningKey(key).parseClaimsJws(token);
                 return true;
             }

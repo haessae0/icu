@@ -11,12 +11,12 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/icu?serverTimezone=Asia/Seoul
-    username: minsu
-    password: 'haessae0'
+    username: root
+    password: "root"
 
   servlet:
     multipart:
-      location: C:\Users\haess\Desktop\icu\ICU\src\main\webapp\userimg
+      location: //Users//haessae0//Desktop/icu//ICU//src//main//webapp//userimg
       max-file-size: 100MB
       max-request-size: 100MB
 

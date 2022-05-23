@@ -18,9 +18,9 @@ public interface UserService {
 
     Boolean logout(HttpServletRequest httpServletRequest);
 
-    UserDto getUser(String userId);
+    UserDto getUser(String username);
 
-    UserDto getStudent(String userId);
+    UserDto getStudent(String username);
 
     List<UserDto> getStudentList();
 
@@ -28,7 +28,7 @@ public interface UserService {
 
     Boolean updateUser(UserDto userDto, MultipartFile multipartFile);
 
-    Boolean updateUserWithoutimg(UserDto userDto);
+    Boolean updateUserWithoutImage(UserDto userDto);
 
-    Boolean deleteUser(String userId);
+    Boolean deleteUser(String username);
 }

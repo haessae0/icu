@@ -295,7 +295,7 @@ export default {
   deleteTestProblems(testNum) {
     axios
       .delete(
-        "http://localhost:8000/testpro/delete?userId=java@educare.com&testnum=" +
+        "http://localhost:8000/testpro/delete?username=java@educare.com&testnum=" +
           testNum,
         {
           headers: {

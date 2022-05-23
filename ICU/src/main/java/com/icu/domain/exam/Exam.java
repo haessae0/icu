@@ -1,41 +1,51 @@
 package com.icu.domain.exam;
 
-import com.icu.domain.examinfo.ExamInfo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.icu.domain.quiz.Quiz;
+import com.icu.domain.quizforstudent.QuizForStudent;
+import com.icu.domain.user.Instructor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Exam {
 
+    @OneToMany(mappedBy = "examNumber", cascade = CascadeType.REMOVE)
+    List<QuizForStudent> studentList = new ArrayList<QuizForStudent>();
+    @OneToMany(mappedBy = "examNumber", cascade = CascadeType.REMOVE)
+    List<Quiz> problemList = new ArrayList<Quiz>();
+
     @Id
-    @Column(name = "e_id")
+    @Column(name = "exam_num")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long examId;
+    private long examNumber;
 
-    @Column(name = "e_num")
-    private int examNum;
+    @Column(name = "exam_name")
+    private String examName;
 
-    @Column(name = "e_question")
-    private String examQuestion;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @Column(name = "open_time")
+    private LocalDateTime openTime;
 
-    @Column(name = "e_selection")
-    private String examSelection;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @Column(name = "close_time")
+    private LocalDateTime closeTime;
 
-    @Column(name = "e_desimage")
-    private String examDesImage;
+    @Column(name = "exam_describe")
+    private String examDescribe;
 
-    @Column(name = "e_answer")
-    private String examAnswer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exam_num")
-    private ExamInfo examNumber;
+    @ManyToOne
+    @JoinColumn(name = "ins_id")
+    private Instructor instructorId;
 }

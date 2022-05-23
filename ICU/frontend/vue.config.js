@@ -3,7 +3,6 @@ module.exports = {
     indexPath: "./public/index.html",
     devServer: {
         proxy: "http://localhost:8000",
-        overlay: false
     },
     chainWebpack: config => {
         const svgRule = config.module.rule("svg");

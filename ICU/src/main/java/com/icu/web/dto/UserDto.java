@@ -15,7 +15,7 @@ public class UserDto {
 
     @NotNull
     @Size(min = 8, max = 50)
-    private String userId;
+    private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
@@ -24,7 +24,7 @@ public class UserDto {
 
     @NotNull
     @Size(min = 2, max = 50)
-    private String name;
+    private String fullname;
 
     @NotNull
     @Size(min = 2, max = 50)
@@ -32,7 +32,7 @@ public class UserDto {
 
     @NotNull
     @Size(min = 2, max = 50)
-    private String profileImage;
+    private String userImage;
 
     @NotNull
     @Size(min = 2, max = 50)

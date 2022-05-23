@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <nav-bar/>
-    <template v-if="userRole === 'rSTUDENT'">
-      <aside-menu :menu="student_menu" @menu-click="menuClick"/>
+    <nav-bar />
+    <template v-if="userRole === 'ROLE_STUDENT'">
+      <aside-menu :menu="student_menu" @menu-click="menuClick" />
     </template>
-    <template v-else-if="userRole === 'rINSTRUCTOR'">
-      <aside-menu :menu="instructor_menu" @menu-click="menuClick"/>
+    <template v-else-if="userRole === 'ROLE_INSTRUCTOR'">
+      <aside-menu :menu="instructor_menu" @menu-click="menuClick" />
     </template>
     <template v-else>
-      <aside-menu :menu="menu" @menu-click="menuClick"/>
+      <aside-menu :menu="menu" @menu-click="menuClick" />
     </template>
     <transition name="page">
       <router-view></router-view>
     </transition>
-    <footer-bar/>
+    <footer-bar />
   </div>
 </template>
 
@@ -22,8 +22,8 @@
 import NavBar from "@/components/NavBar";
 import AsideMenu from "@/components/AsideMenu";
 import FooterBar from "@/components/FooterBar";
-import {mapState} from "vuex";
-import {getUserRoleFromSession} from "@/utils/session";
+import { mapState } from "vuex";
+import { getUserRoleFromSession } from "../src/utils/session";
 
 export default {
   name: "home",
@@ -38,7 +38,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userId", "userRole"]),
+    ...mapState(["userName", "userRole"]),
     menu() {
       return [
         "프로필",
@@ -163,9 +163,7 @@ export default {
 .page-leave-active {
   transition: opacity 0.5s;
 }
-
-.page-enter, .page-leave-to /* .page-leave-active below version 2.1.8 */
-{
+.page-enter, .page-leave-to /* .page-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 </style>

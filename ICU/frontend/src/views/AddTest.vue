@@ -83,7 +83,7 @@ export default {
   },
   data() {
     return {
-      userId: this.$store.state.userId,
+      userName: this.$store.state.userName,
       userRole: this.$store.state.userRole,
       showWeekNumber: false,
       enableSeconds: true,
@@ -107,7 +107,7 @@ export default {
     titleStack() {
       return ["강사", "시험 생성"];
     },
-    ...mapState(["userId", "userRole"])
+    ...mapState(["userName", "userRole"])
   },
   methods: {
     testForm() {
@@ -119,7 +119,7 @@ export default {
       };
       axios
         .post(
-          "http://localhost:8000/test/create?userId=" + this.userId,
+          "http://localhost:8000/test/create?username=" + this.userName,
           addTestData,
           {
             headers: {

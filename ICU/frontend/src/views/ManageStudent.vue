@@ -14,12 +14,12 @@
           <section>
             <b-table :data="applicants" :hoverable="isHoverable">
               <b-table-column
-                field="userId"
+                field="username"
                 label="학생ID"
                 v-slot="props"
                 centered
               >
-                {{ props.row.userId }}
+                {{ props.row.username }}
               </b-table-column>
               <b-table-column
                 field="userRealName"
@@ -41,7 +41,7 @@
                 <b-button
                   type="is-primary"
                   outlined
-                  v-on:click="manageStudentVideo(props.row.userId)"
+                  v-on:click="manageStudentVideo(props.row.username)"
                   position="is-centered"
                   size="is-small"
                   >감독하기</b-button
@@ -51,7 +51,7 @@
                 <b-button
                   type="is-danger"
                   outlined
-                  v-on:click="deleteApplicant(props.row.userId)"
+                  v-on:click="deleteApplicant(props.row.username)"
                   position="is-centered"
                   size="is-small"
                   >삭제</b-button
@@ -76,12 +76,12 @@
       >
         <b-table :data="students" :hoverable="isHoverable">
           <b-table-column
-            field="userId"
+            field="username"
             label="학생ID"
             v-slot="props"
             centered
           >
-            {{ props.row.userId }}
+            {{ props.row.username }}
           </b-table-column>
           <b-table-column
             field="userRealname"
@@ -96,7 +96,7 @@
             <b-button
               type="is-primary"
               outlined
-              v-on:click="addStudent(props.row.userId)"
+              v-on:click="addStudent(props.row.username)"
               position="is-centered"
               size="is-small"
               >추가하기</b-button
@@ -171,7 +171,7 @@ export default {
           console.log(e);
         });
     },
-    addStudent(userId) {
+    addStudent(userName) {
       let instance = axios.create();
       instance.defaults.headers.common[
         "Authorization"
@@ -179,7 +179,7 @@ export default {
       instance
         .post(
           "http://localhost:8000/stutest/insert/" +
-            userId +
+            userName +
             "/" +
             this.testNum
         )
@@ -194,11 +194,11 @@ export default {
           this.console.log(e);
         });
     },
-    deleteApplicant(userId) {
+    deleteApplicant(userName) {
       axios
         .delete(
           "http://localhost:8000/stutest/delete/" +
-            userId +
+            userName +
             "/" +
             this.testNum,
           {
@@ -218,10 +218,10 @@ export default {
         });
       this.getAllApplicants();
     },
-    manageStudentVideo(userId) {
+    manageStudentVideo(userName) {
       return this.$router.push({
         name: "TestSupervision",
-        params: { testNum: this.testNum, userId: userId }
+        params: { testNum: this.testNum, userName: userName }
       });
     },
     success() {

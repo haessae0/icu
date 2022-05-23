@@ -24,7 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> insertUser(UserDto userDto, @RequestParam(value = "file", required = false) MultipartFile multipartFile) {
+    public ResponseEntity<String> insertUser(UserDto userDto,
+            @RequestParam(value = "file", required = false) MultipartFile multipartFile) {
         Boolean check = null;
         if (multipartFile != null) {
             check = userService.insertUser(userDto, multipartFile);
@@ -83,12 +84,13 @@ public class UserController {
 
     @PutMapping("/update")
     @PreAuthorize("hasAnyRole('SrTUDENT','rINSTRUCTOR')")
-    public ResponseEntity<String> updateUser(UserDto userDto, @RequestParam(value = "file", required = false) MultipartFile multipartFile) {
+    public ResponseEntity<String> updateUser(UserDto userDto,
+            @RequestParam(value = "file", required = false) MultipartFile multipartFile) {
         Boolean check = null;
         if (multipartFile != null) {
             check = userService.updateUser(userDto, multipartFile);
         } else {
-            check = userService.updateUserWithoutimg(userDto);
+            check = userService.updateUserWithoutImage(userDto);
         }
 
         if (check) {

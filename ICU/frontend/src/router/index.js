@@ -25,142 +25,141 @@ Vue.use(VueRouter);
 // };
 
 const routes = [
-    {
-        meta: {
-            title: "Home"
-        },
-        path: "/",
-        name: "Home",
-        component: () => import("../views/Home.vue")
+  {
+    meta: {
+      title: "Home"
     },
-    {
-        meta: {
-            title: "Profile"
-        },
-        path: "/profile",
-        name: "Profile",
-        // beforeEnter: onlyAuthUser,
-        component: () =>
-            import(/* webpackChunkName: "profile" */ "../views/Profile.vue")
+    path: "/",
+    name: "Home",
+    component: () => import("../views/Home.vue")
+  },
+  {
+    meta: {
+      title: "Profile"
     },
-    {
-        meta: {
-            title: "TestGuide"
-        },
-        path: "/testguide",
-        name: "TestGuide",
-        // beforeEnter: onlyAuthUser,
-        component: () => import("../views/TestGuide.vue")
+    path: "/profile",
+    name: "Profile",
+    // beforeEnter: onlyAuthUser,
+    component: () =>
+      import(/* webpackChunkName: "profile" */ "../views/Profile.vue")
+  },
+  {
+    meta: {
+      title: "TestGuide"
     },
-    {
-        meta: {
-            title: "CompleteTest"
-        },
-        path: "/completetest",
-        name: "CompleteTest",
-        // beforeEnter: onlyAuthUser,
-        component: () => import("../views/CompleteTest.vue")
+    path: "/testguide",
+    name: "TestGuide",
+    // beforeEnter: onlyAuthUser,
+    component: () => import("../views/TestGuide.vue")
+  },
+  {
+    meta: {
+      title: "CompleteTest"
     },
-    {
-        meta: {
-            title: "StudentTestList"
-        },
-        path: "/student",
-        name: "StudentTestList",
-        // beforeEnter: onlyAuthUser,
-        component: () => import("../views/StudentTestList.vue")
+    path: "/completetest",
+    name: "CompleteTest",
+    // beforeEnter: onlyAuthUser,
+    component: () => import("../views/CompleteTest.vue")
+  },
+  {
+    meta: {
+      title: "StudentTestList"
     },
-    {
-        meta: {
-            title: "ModifyTest"
-        },
-        path: "/modifytest",
-        name: "ModifyTest",
-        // beforeEnter: onlyAuthUser,
-        component: () => import("../views/ModifyTest.vue")
+    path: "/student",
+    name: "StudentTestList",
+    // beforeEnter: onlyAuthUser,
+    component: () => import("../views/StudentTestList.vue")
+  },
+  {
+    meta: {
+      title: "ModifyTest"
     },
-    {
-        meta: {
-            title: "TestSupervision"
-        },
-        path: "/testsupervision",
-        name: "TestSupervision",
-        // beforeEnter: onlyAuthUser,
-        component: () => import("../views/TestSupervision.vue")
+    path: "/modifytest",
+    name: "ModifyTest",
+    // beforeEnter: onlyAuthUser,
+    component: () => import("../views/ModifyTest.vue")
+  },
+  {
+    meta: {
+      title: "TestSupervision"
     },
-    {
-        meta: {
-            title: "ManageStudent"
-        },
-        path: "/managestudent",
-        name: "ManageStudent",
-        // beforeEnter: onlyAuthUser,
-        component: () => import("../views/ManageStudent.vue")
+    path: "/testsupervision",
+    name: "TestSupervision",
+    // beforeEnter: onlyAuthUser,
+    component: () => import("../views/TestSupervision.vue")
+  },
+  {
+    meta: {
+      title: "ManageStudent"
     },
-    {
-        meta: {
-            title: "AddTest"
-        },
-        path: "/addtest",
-        name: "AddTest",
-        // beforeEnter: onlyAuthUser,
-        component: () => import("../views/AddTest.vue")
+    path: "/managestudent",
+    name: "ManageStudent",
+    // beforeEnter: onlyAuthUser,
+    component: () => import("../views/ManageStudent.vue")
+  },
+  {
+    meta: {
+      title: "AddTest"
     },
-    {
-        meta: {
-            title: "AddTestProblems"
-        },
-        path: "/problems",
-        name: "AddTestProblems",
-        // beforeEnter: onlyAuthUser,
-        component: () => import("../views/AddTestProblems.vue")
+    path: "/addtest",
+    name: "AddTest",
+    // beforeEnter: onlyAuthUser,
+    component: () => import("../views/AddTest.vue")
+  },
+  {
+    meta: {
+      title: "AddTestProblems"
     },
-    {
-        meta: {
-            title: "InstructorTest"
-        },
-        path: "/instructor",
-        name: "InstructorTest",
-        // beforeEnter: onlyAuthUser,
-        component: () => import("../views/InstructorTest.vue")
+    path: "/problems",
+    name: "AddTestProblems",
+    // beforeEnter: onlyAuthUser,
+    component: () => import("../views/AddTestProblems.vue")
+  },
+  {
+    meta: {
+      title: "InstructorTest"
     },
-    {
-        meta: {
-            title: "Sign In",
-            unauthorized: true
-        },
-        path: "/signin",
-        name: "Sign In",
-        component: () => import("../views/SignIn.vue"),
-        props: true
+    path: "/instructor",
+    name: "InstructorTest",
+    // beforeEnter: onlyAuthUser,
+    component: () => import("../views/InstructorTest.vue")
+  },
+  {
+    meta: {
+      title: "Sign In"
     },
-    {
-        meta: {
-            title: "Sign Up"
-        },
-        path: "/signup",
-        name: "Sign Up",
-        // beforeEnter: rejectAuthUser,
-        component: () => import("../views/SignUp.vue"),
-        props: true
+    path: "/signin",
+    name: "Sign In",
+    component: () => import("../views/SignIn.vue"),
+    props: true
+  },
+  {
+    meta: {
+      title: "Sign Up"
     },
-    {
-        path: "/:catchAll(.*)",
-        component: () => import("../views/NotFoundPage.vue")
-    }
+    path: "/signup",
+    name: "Sign Up",
+    // beforeEnter: rejectAuthUser,
+    component: () => import("../views/SignUp.vue"),
+    props: true
+  },
+  {
+    path: "/:catchAll(.*)",
+    component: () => import("../views/NotFoundPage.vue")
+  }
 ];
 
 const router = new VueRouter({
-    mode: "history", // # 값 제거 /#/
-    base: process.env.BASE_URL,
-    routes,
-    scrollBehavior(to, from, savedPosition) {
-        if (savedPosition) {
-            return savedPosition;
-        } else {
-            return {x: 0, y: 0};
-        }
+  mode: "history", // # 값 제거 /#/
+  base: process.env.BASE_URL,
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
     }
+  }
 });
 
 export default router;

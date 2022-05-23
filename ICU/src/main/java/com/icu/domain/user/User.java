@@ -18,21 +18,21 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @Column(name = "u_id", length = 25)
-    private String userId;
+    @Column(name = "user_id", length = 25)
+    private String username;
 
     @JsonIgnore
-    @Column(name = "u_password", length = 200)
+    @Column(name = "user_pw", length = 200)
     private String password;
 
-    @Column(name = "u_name", length = 200)
-    private String name;
+    @Column(name = "user_name", length = 200)
+    private String fullname;
 
-    @Column(name = "u_phonenumber", length = 200)
+    @Column(name = "user_phonenum", length = 200)
     private String phoneNumber;
 
-    @Column(name = "u_profile_image")
-    private String profileImage;
+    @Column(name = "user_image")
+    private String userImage;
 
     @Column(name = "role", nullable = false, insertable = false, updatable = false)
     private String role;

@@ -17,8 +17,8 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(final String userId) {
-        Optional<User> userEntity = userRepository.findById(userId);
+    public UserDetails loadUserByUsername(final String username) {
+        Optional<User> userEntity = userRepository.findById(username);
         return new CustomUserDetails(userEntity.get());
     }
 

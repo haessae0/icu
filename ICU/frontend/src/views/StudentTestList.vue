@@ -1,52 +1,52 @@
 <template>
   <div>
-    <title-bar :title-stack="titleStack"/>
+    <title-bar :title-stack="titleStack" />
     <hero-bar>
       내 시험
-      <router-link slot="right" class="button" to="/profile">
+      <router-link slot="right" to="/profile" class="button">
         마이 페이지
       </router-link>
     </hero-bar>
     <section class="section is-main-section">
       <card-component
-          class="has-table has-mobile-sort-spaced"
-          icon="account-multiple"
-          title="시험"
+        class="has-table has-mobile-sort-spaced"
+        title="시험"
+        icon="account-multiple"
       >
         <div id="app" class="container">
           <section>
             <b-table
-                :data="isEmpty ? [] : studenttest"
-                :hoverable="isHoverable"
+              :data="isEmpty ? [] : studenttest"
+              :hoverable="isHoverable"
             >
               <b-table-column
-                  v-slot="props"
-                  centered
-                  field="testNum"
-                  label="시험번호"
-                  numeric
+                field="testNum"
+                label="시험번호"
+                numeric
+                centered
+                v-slot="props"
               >
                 {{ props.row.testNum }}
               </b-table-column>
               <b-table-column
-                  v-slot="props"
-                  centered
-                  field="testName"
-                  label="시험명"
+                field="testName"
+                label="시험명"
+                v-slot="props"
+                centered
               >
                 {{ props.row.testName }}
               </b-table-column>
               <b-table-column
-                  v-slot="props"
-                  centered
-                  field="testStatus"
-                  label="시험응시여부"
+                field="testStatus"
+                label="시험응시여부"
+                v-slot="props"
+                centered
               >
                 <b-field>
                   <span
-                      v-if="props.row.testStatus === 'T'"
-                      class="tag is-danger"
-                      v-on:click="takeStudentTest(props.row.testNum)"
+                    v-if="props.row.testStatus == 'T'"
+                    class="tag is-danger"
+                    v-on:click="takeStudentTest(props.row.testNum)"
                   >
                     시험 응시 하기
                   </span>
@@ -56,18 +56,18 @@
                 </b-field>
               </b-table-column>
               <b-table-column
-                  v-slot="props"
-                  centered
-                  field="testResult"
-                  label="채점결과"
+                field="testResult"
+                label="채점결과"
+                v-slot="props"
+                centered
               >
                 <b-field>
                   <span v-if="props.row.testResult == null" class="tag is-warn">
                     채점중
                   </span>
                   <span
-                      v-else-if="(props.row.testStatus = !null)"
-                      class="tag is-success"
+                    v-else-if="(props.row.testStatus = !null)"
+                    class="tag is-success"
                   >
                     {{ props.row.testResult }}
                   </span>
@@ -78,13 +78,13 @@
         </div>
       </card-component>
 
-      <hr/>
+      <hr />
     </section>
   </div>
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 import CardComponent from "@/components/CardComponent";
 import TitleBar from "@/components/TitleBar";
 import HeroBar from "@/components/HeroBar";
@@ -97,9 +97,9 @@ export default {
     TitleBar,
     CardComponent
   },
-  data: function () {
+  data: function() {
     return {
-      userId: this.$store.state.userId,
+      userName: this.$store.state.userName,
       userRole: this.$store.state.userRole,
 
       studenttest: ""
@@ -109,30 +109,30 @@ export default {
     titleStack() {
       return ["시험보기", "내 시험 목록"];
     },
-    ...mapState(["userId", "userRole"])
+    ...mapState(["userName", "userRole"])
   },
   methods: {
     getStudentTest() {
       axios
-          .get("http://localhost:8000/stutest/get/" + this.userId, {
-            headers: {
-              Authorization: sessionStorage.getItem("Authorization")
-            }
-          })
-          .then(response => {
-            this.studenttest = response.data;
-            console.log("확인");
-            console.log(this.studenttest);
-          })
-          .catch(e => {
-            console.log(e);
-          });
+        .get("http://localhost:8000/stutest/get/" + this.userName, {
+          headers: {
+            Authorization: sessionStorage.getItem("Authorization")
+          }
+        })
+        .then(response => {
+          this.studenttest = response.data;
+          console.log("확인");
+          console.log(this.studenttest);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
     takeStudentTest(testNum) {
       //  수정버튼 클릭시 ModifyTest로 이동
       return this.$router.push({
         name: "TestGuide",
-        params: {testNum: testNum}
+        params: { testNum: testNum }
       });
     }
   },

@@ -10,7 +10,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value = "SELECT * FROM user WHERE role=?", nativeQuery = true)
     List<User> findAllUserByRole(String student);
 
-    @Query(value = "select * from user where u_id not in (select s_id from estudent where exam_num=?) and role=?", nativeQuery = true)
+    @Query(value = "select * from user where user_id not in (select stu_id from quizforstudent where exam_num=?) and role=?", nativeQuery = true)
     List<User> findAllUserNotInTest(long examNumber, String role);
 
 }

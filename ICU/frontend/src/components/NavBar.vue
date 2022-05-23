@@ -25,7 +25,7 @@
           <user-avatar />
           <div class="is-user-name">
             <template v-if="authorization != null">
-              <span>{{ userId }}</span>
+              <span>{{ userName }}</span>
             </template>
             <template v-else>
               <span>로그인</span>
@@ -95,7 +95,7 @@ export default {
       "isNavBarVisible",
       "isAsideMobileExpanded",
       "isDarkModeActive",
-      "userId"
+      "userName"
     ])
   },
   mounted() {

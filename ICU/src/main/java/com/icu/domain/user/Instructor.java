@@ -1,7 +1,7 @@
 package com.icu.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.icu.domain.examinfo.ExamInfo;
+import com.icu.domain.exam.Exam;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +21,7 @@ public class Instructor extends User {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "instructorId", cascade = CascadeType.REMOVE)
-    List<ExamInfo> examList = new ArrayList<ExamInfo>();
+    List<Exam> examList = new ArrayList<Exam>();
 
     @Builder
     public Instructor() {
@@ -29,8 +29,8 @@ public class Instructor extends User {
     }
 
     @Builder
-    public Instructor(String userId, String password, String name, String phoneNumber, String profileImage, List<ExamInfo> examList) {
-        super(userId, password, name, phoneNumber, profileImage, "rINSTUCTOR");
+    public Instructor(String username, String password, String fullname, String phoneNumber, String userImage, List<Exam> examList) {
+        super(username, password, fullname, phoneNumber, userImage, "rINSTUCTOR");
         this.examList = examList;
     }
 

@@ -66,7 +66,7 @@ export default {
   data: function() {
     return {
       testNum: this.$route.params.testNum,
-      userId: this.$store.state.userId,
+      username: this.$store.state.username,
       test: ""
     };
   },
@@ -91,10 +91,10 @@ export default {
           console.log(e);
         });
     },
-    // flask로 userId과 testnum 정보를 전송
+    // flask로 username과 testnum 정보를 전송
     sendInfo() {
       setCookie("Authorization", sessionStorage.getItem("Authorization"), 1);
-      location.href = `http://localhost:5000/${this.userId}/${this.testNum}`;
+      location.href = `http://localhost:5000/${this.username}/${this.testNum}`;
     }
   },
   mounted() {

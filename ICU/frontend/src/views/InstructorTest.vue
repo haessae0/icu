@@ -112,7 +112,7 @@ export default {
   },
   data: function() {
     return {
-      userId: this.$store.state.userId,
+      userName: this.$store.state.userName,
       userRole: this.$store.state.userRole,
       test: ""
     };
@@ -121,12 +121,12 @@ export default {
     titleStack() {
       return ["강사", "시험 목록 관리"];
     },
-    ...mapState(["userId", "userRole"])
+    ...mapState(["userName", "userRole"])
   },
   methods: {
     getInstructorTest() {
       axios
-        .get("http://localhost:8000/test/get?userId=" + this.userId, {
+        .get("http://localhost:8000/test/get?username=" + this.userName, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -156,8 +156,8 @@ export default {
     deleteInstructorTest(testNum) {
       axios
         .delete(
-          "http://localhost:8000/test/delete?userId=" +
-            this.userId +
+          "http://localhost:8000/test/delete?username=" +
+            this.userName +
             "&testnum=" +
             testNum,
           {

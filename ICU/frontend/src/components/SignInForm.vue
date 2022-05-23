@@ -16,22 +16,22 @@
       <div class="container is-max-desktop">
         <div class="columns is-mobile">
           <div class="column is-half is-offset-one-quarter">
-            <form class="form" @submit.prevent="submitForm()">
-              <b-field align="left" label="ID" message="" type="">
+            <form @submit.prevent="submitForm()" class="form">
+              <b-field label="ID" type="" message="" align="left">
                 <b-input
-                    v-model="username"
-                    maxlength="30"
-                    placeholder="아이디"
-                    size="is-medium"
+                  v-model="username"
+                  placeholder="아이디"
+                  maxlength="30"
+                  size="is-medium"
                 ></b-input>
               </b-field>
-              <b-field align="left" label="Password" message="" type="">
+              <b-field label="Password" type="" message="" align="left">
                 <b-input
-                    v-model="password"
-                    maxlength="30"
-                    placeholder="비밀번호"
-                    size="is-medium"
-                    type="password"
+                  v-model="password"
+                  type="password"
+                  placeholder="비밀번호"
+                  maxlength="30"
+                  size="is-medium"
                 >
                 </b-input>
               </b-field>
@@ -40,15 +40,15 @@
                   로그인
                 </b-button>
                 <b-button
-                    class="is-primary"
-                    tag="router-link"
-                    to="/signup"
-                    type="is-link"
+                  class="is-primary"
+                  tag="router-link"
+                  to="/signup"
+                  type="is-link"
                 >
                   회원가입
                 </b-button>
               </div>
-              <br/><br/>
+              <br /><br />
             </form>
           </div>
         </div>
@@ -57,52 +57,51 @@
   </div>
 </template>
 <script>
-import {validateEmail} from "@/utils/validation";
+import { validateEmail } from "@/utils/validation";
 import axios from "axios";
-
 export default {
   data() {
     return {
-      userId: "",
+      username: "",
       password: ""
     };
   },
   computed: {
     isIdValid() {
-      return validateEmail(this.userId); //id가 이메일 형식이 맞는지 체크
+      return validateEmail(this.username); //id가 이메일 형식이 맞는지 체크
     }
   },
   methods: {
     submitForm() {
       const loginData = {
-        userId: this.userId,
+        username: this.username,
         password: this.password
       };
       axios
-          .post("http://localhost:8000/user/signin", loginData, {
-            headers: {
-              "Content-Type": "application/json"
-            }
-          })
-          .then(response => {
-            console.log(response.headers.authorization);
-            sessionStorage.setItem(
-                "Authorization",
-                response.headers.authorization
-            );
-            // this.$router.push({ name: "Home" });
-            location.reload();
-            location.href = "http://localhost:8081/";
-          })
-          .catch(error => {
-            console.log(error);
-          })
-          .finally(() => {
-            this.initForm();
-          });
+        .post("http://localhost:8000/user/signin", loginData, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          console.log(response.headers.authorization);
+          sessionStorage.setItem(
+            "Authorization",
+            response.headers.authorization
+          );
+          // this.$router.push({ name: "Home" });
+          location.reload();
+          location.href = "http://localhost:8081/";
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.initForm();
+        });
     },
     initForm() {
-      this.userId = "";
+      this.username = "";
       this.password = "";
     }
   }

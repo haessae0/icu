@@ -27,7 +27,7 @@
             <h6 class="title is-6">부정행위 유무</h6>
             <h6 class="subtitle is-6 pb-2">isCheating: {{ isCheating }}</h6>
             <h6 class="title is-6">응시자</h6>
-            <h6 class="subtitle is-6 pb-2">{{ userId }}</h6>
+            <h6 class="subtitle is-6 pb-2">{{ userName }}</h6>
             <!-- <br />
             videoname: {{ videoName }} -->
             <b-field label="시험 점수를 입력하세요. 부정행위시 0점">
@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       testNum: this.$route.params.testNum,
-      userId: this.$route.params.userId,
+      userName: this.$route.params.userName,
       testResult: "",
       studentTest: "",
       cheatTime: "",
@@ -100,7 +100,7 @@ export default {
       axios
         .get(
           "http://localhost:8000/stutest/get/" +
-            this.userId +
+            this.userName +
             "/" +
             this.testNum,
           {
@@ -135,7 +135,7 @@ export default {
       instance
         .put(
           "http://localhost:8000/stutest/update-score/" +
-            this.userId +
+            this.userName +
             "/" +
             this.testNum +
             "/" +

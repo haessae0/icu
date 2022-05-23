@@ -255,7 +255,7 @@ export default {
       problems: "",
       problems2: "",
       testNum: this.$route.params.testNum,
-      userId: this.$store.state.userId,
+      userName: this.$store.state.userName,
       showWeekNumber: false,
       enableSeconds: true,
       hourFormat: undefined, // Browser locale
@@ -282,7 +282,7 @@ export default {
     titleStack() {
       return ["강사", "시험 변경"];
     },
-    ...mapState(["userId", "userRole"])
+    ...mapState(["userName", "userRole"])
   },
   methods: {
     getTestForm() {
