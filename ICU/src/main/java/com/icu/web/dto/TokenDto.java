@@ -1,10 +1,6 @@
 package com.icu.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -12,5 +8,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenDto {
+
+    // 토큰 재 갱신 관련 수욜 작업하길
+
     private String token;
 }

@@ -46,23 +46,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
+                .csrf().disable()
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling() // 예외처리 기능
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증 실패시 처리
-                .accessDeniedHandler(jwtAccessDeniedHandler) // 인가 실패시 처리
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
-                .sessionManagement() // 세션을 사용하지 않기 때문에 STATELESS로 설정
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests() // Token이 없어도 호출할 수 있도록 허용
+                .authorizeRequests()
                 .antMatchers("/user/signin").permitAll()
                 .antMatchers("/user/signup").permitAll()
-                .anyRequest().authenticated() // 나머지는 권한 검증
+                .antMatchers("/stutest/update-mytest").permitAll()
+                .antMatchers("/userimg/**").permitAll()
+                .antMatchers("/tproblemvideo/video.mp4").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider)); // 사용자 정의 설정
+                .apply(new JwtSecurityConfig(tokenProvider));
     }
 }

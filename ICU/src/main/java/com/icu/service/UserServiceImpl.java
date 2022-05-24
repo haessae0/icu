@@ -141,6 +141,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    // 토큰 재 갱신 방식으로 바꿔야 함
     public Boolean logout(HttpServletRequest httpServletRequest) {
         try {
             logger.info("로그아웃");

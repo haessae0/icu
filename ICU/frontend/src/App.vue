@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <nav-bar />
-    <template v-if="userRole === 'ROLE_STUDENT'">
+    <template v-if="userRole === 'rSTUDENT'">
       <aside-menu :menu="student_menu" @menu-click="menuClick" />
     </template>
-    <template v-else-if="userRole === 'ROLE_INSTRUCTOR'">
+    <template v-else-if="userRole === 'rINSTRUCTOR'">
       <aside-menu :menu="instructor_menu" @menu-click="menuClick" />
     </template>
     <template v-else>
