@@ -19,7 +19,7 @@ public class Admin extends User {
     }
 
     @Builder
-    public Admin(String username, String password, String fullname, String phoneNumber, String userImage) {
-        super(username, password, fullname, phoneNumber, userImage, "rADMIN");
+    public Admin(String username, String password, String fullname, String phoneNumber) {
+        super(username, password, fullname, phoneNumber, "rADMIN");
     }
 }

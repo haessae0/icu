@@ -31,9 +31,6 @@ public class User {
     @Column(name = "user_phonenum", length = 200)
     private String phoneNumber;
 
-    @Column(name = "user_image")
-    private String userImage;
-
     @Column(name = "role", nullable = false, insertable = false, updatable = false)
     private String role;
 }

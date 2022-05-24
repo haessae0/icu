@@ -1,14 +1,6 @@
 <template>
   <card-component title="프로필 수정" icon="account-circle">
     <form @submit.prevent="submit">
-      <b-field horizontal label="사진">
-        <input
-          type="file"
-          id="file"
-          ref="file"
-          v-on:change="handleFileUpload()"
-        />
-      </b-field>
       <hr />
       <b-field horizontal label="이름" message="필수 입력 사항">
         <b-input
@@ -72,7 +64,6 @@ export default {
     password: "",
     fullname: "",
     phoneNumber: "",
-    userImage: "",
     role: ""
   }),
   created() {
@@ -104,13 +95,12 @@ export default {
       formData.append("password", this.password);
       formData.append("fullname", this.fullname);
       formData.append("phoneNumber", this.phoneNumber);
-      formData.append("file", this.file);
       formData.append("role", this.role);
       axios
         .put("http://localhost:8000/user/update", formData, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization"),
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*"
           }
         })
@@ -132,11 +122,7 @@ export default {
       this.password = "";
       this.fullname = "";
       this.phoneNumber = "";
-      this.userImage = "";
       this.role = "";
-    },
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
     },
     created() {
       fetchUserInfo()

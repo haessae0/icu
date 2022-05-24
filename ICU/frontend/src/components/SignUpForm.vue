@@ -43,15 +43,6 @@
             ></b-input>
           </b-field>
           <br/>
-          <!-- 파일 선택 및 업로드 -->
-          <b-field align="left" label="프로필 사진">
-            <input
-                id="file"
-                ref="file"
-                type="file"
-                v-on:change="handleFileUpload()"
-            />
-          </b-field>
           <b-field align="left" label="권한 설정" message="" type="">
             <div class="block">
               <b-radio
@@ -86,7 +77,6 @@ export default {
       password: "",
       fullname: "",
       phoneNumber: "",
-      userImage: "",
       role: "",
       memberagree: false
     };
@@ -98,12 +88,11 @@ export default {
       formData.append("password", this.password);
       formData.append("fullname", this.fullname);
       formData.append("phoneNumber", this.phoneNumber);
-      formData.append("file", this.file);
       formData.append("role", this.role);
       axios
           .post("http://localhost:8000/user/signup", formData, {
             headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*"
             }
           })
@@ -125,11 +114,7 @@ export default {
       this.password = "";
       this.fullname = "";
       this.phoneNumber = "";
-      this.userIamge = "";
       this.role = "";
-    },
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
     },
     success() {
       this.$buefy.notification.open({

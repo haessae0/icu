@@ -24,14 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> insertUser(UserDto userDto,
-            @RequestParam(value = "file", required = false) MultipartFile multipartFile) {
-        Boolean check = null;
-        if (multipartFile != null) {
-            check = userService.insertUser(userDto, multipartFile);
-        } else {
-            check = userService.insertUserWithoutImage(userDto);
-        }
+    public ResponseEntity<String> insertUser(UserDto userDto) {
+        Boolean check = userService.insertUser(userDto);
 
         if (check) {
             return new ResponseEntity<String>("회원 가입 성공", HttpStatus.CREATED);
@@ -84,14 +78,8 @@ public class UserController {
 
     @PutMapping("/update")
     @PreAuthorize("hasAnyRole('SrTUDENT','rINSTRUCTOR')")
-    public ResponseEntity<String> updateUser(UserDto userDto,
-            @RequestParam(value = "file", required = false) MultipartFile multipartFile) {
-        Boolean check = null;
-        if (multipartFile != null) {
-            check = userService.updateUser(userDto, multipartFile);
-        } else {
-            check = userService.updateUserWithoutImage(userDto);
-        }
+    public ResponseEntity<String> updateUser(UserDto userDto) {
+        Boolean check = userService.updateUser(userDto);
 
         if (check) {
             return new ResponseEntity<String>("정보 수정 성공", HttpStatus.OK);

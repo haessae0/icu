@@ -48,22 +48,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public Boolean insertUser(UserDto userDto, MultipartFile multipartFile) {
+    public Boolean insertUser(UserDto userDto) {
         Optional<User> findUser = userRepository.findById(userDto.getUsername());
 
         try {
             if (!findUser.isPresent()) {
-                String userimg = null;
-
-                try {
-                    userimg = System.currentTimeMillis() + multipartFile.getOriginalFilename();
-                    multipartFile.transferTo(
-                            new File(System.getProperty("user.dir") + "\\src\\main\\webapp\\userimg\\" + userimg));
-                    logger.info("{} 이미지 등록 성공", userDto.getUsername());
-                } catch (IllegalStateException | IOException exception) {
-                    exception.printStackTrace();
-                    logger.error("{} 이미지 등록 실패", userDto.getUsername());
-                }
 
                 if (userDto.getRole().equals("instructor")) {
                     Instructor inst = new Instructor();
@@ -71,7 +60,6 @@ public class UserServiceImpl implements UserService {
                     inst.setPassword(passwordEncoder.encode(userDto.getPassword()));
                     inst.setFullname(userDto.getFullname());
                     inst.setPhoneNumber(userDto.getPhoneNumber());
-                    inst.setUserImage(userDto.getUserImage());
 
                     userRepository.save(inst);
                     logger.info("{} 환영합니다 강사님", userDto.getUsername());
@@ -82,7 +70,6 @@ public class UserServiceImpl implements UserService {
                     stu.setPassword(passwordEncoder.encode(userDto.getPassword()));
                     stu.setFullname(userDto.getFullname());
                     stu.setPhoneNumber(userDto.getPhoneNumber());
-                    stu.setUserImage(userDto.getUserImage());
 
                     userRepository.save(stu);
                     logger.info("{} 환영합니다 학생님", userDto.getUsername());
@@ -103,103 +90,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public Boolean updateUser(UserDto userDto, MultipartFile multipartFile) {
+    public Boolean updateUser(UserDto userDto) {
         Optional<User> findUser = userRepository.findById(userDto.getUsername());
 
         try {
             if (findUser.isPresent()) {
-                String userimg = null;
 
-                try {
-                    userimg = System.currentTimeMillis() + multipartFile.getOriginalFilename();
-                    multipartFile.transferTo(
-                            new File(System.getProperty("user.dir") + "\\src\\main\\webapp\\userimg\\" + userimg));
-
-                    String filename = findUser.get().getUserImage();
-                    File file = new File(System.getProperty("user.dir") + "\\src\\main\\webapp\\userimg\\" + filename);
-
-                    if (file.exists() && !filename.equals("img.png")) {
-                        if (file.delete()) {
-                            logger.info("{} 이미지 삭제 완료", userDto.getUsername());
-                        } else {
-                            logger.info("{} 이미지 삭제 실패", userDto.getUsername());
-                        }
-                    }
-                } catch (IllegalStateException | IOException exception) {
-                    exception.printStackTrace();
-                    logger.error("{} 회원 이미지 갱신 오류 발생", userDto.getUsername());
-                    return false;
-                }
-                User finduser = findUser.get();
-                finduser.setUsername(finduser.getUsername());
-                finduser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-                finduser.setFullname(userDto.getFullname());
-                finduser.setPhoneNumber(userDto.getPhoneNumber());
-                finduser.setUserImage(userimg);
-
-                userRepository.save(finduser);
-                logger.info("{} 수정 성공", userDto.getUsername());
-                return true;
-            } else {
-                logger.info("{} 수정 실패", userDto.getUsername());
-                return false;
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            logger.error("{} 수정 실패", userDto.getUsername());
-            return false;
-        }
-    }
-
-    @Transactional
-    public Boolean insertUserWithoutImage(UserDto userDto) {
-        Optional<User> findUser = userRepository.findById(userDto.getUsername());
-
-        try {
-            if (!findUser.isPresent()) {
-                if (userDto.getRole().equals("instructor")) {
-                    Instructor inst = new Instructor();
-                    inst.setUsername((userDto.getUsername()));
-                    inst.setPassword(passwordEncoder.encode(userDto.getPassword()));
-                    inst.setFullname(userDto.getFullname());
-                    inst.setPhoneNumber(userDto.getPhoneNumber());
-                    inst.setUserImage("img.png");
-
-                    userRepository.save(inst);
-                    logger.info("{} 환영합니다 강사님", userDto.getUsername());
-                    return true;
-                } else if (userDto.getRole().equals("student")) {
-                    Student stu = new Student();
-                    stu.setUsername((userDto.getUsername()));
-                    stu.setPassword(passwordEncoder.encode(userDto.getPassword()));
-                    stu.setFullname(userDto.getFullname());
-                    stu.setPhoneNumber(userDto.getPhoneNumber());
-                    stu.setUserImage("img.png");
-
-                    userRepository.save(stu);
-                    logger.info("{} 환영합니다 학생님", userDto.getUsername());
-                    return true;
-                } else {
-                    logger.info("{} 강사인지 학생인지 선택해주세요", userDto.getUsername());
-                    return false;
-                }
-            } else {
-                logger.info("{} 회원가입 실패", userDto.getUsername());
-                return false;
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            logger.info("{} 회원가입 실패", userDto.getUsername());
-            return false;
-        }
-    }
-
-    @Transactional
-    public Boolean updateUserWithoutImage(UserDto userDto) {
-        Optional<User> findUser = userRepository.findById(userDto.getUsername());
-
-        try {
-            if (findUser.isPresent()) {
                 User finduser = findUser.get();
                 finduser.setUsername(finduser.getUsername());
                 finduser.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -235,7 +131,7 @@ public class UserServiceImpl implements UserService {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             UserDto userDto = UserDto.builder().username(user.getUsername()).fullname(user.getFullname())
-                    .phoneNumber(user.getPhoneNumber()).userImage(user.getUserImage()).role(user.getRole()).build();
+                    .phoneNumber(user.getPhoneNumber()).role(user.getRole()).build();
 
             logger.info("로그인 성공");
             return new ResponseEntity<>(userDto, httpHeaders, HttpStatus.OK);
@@ -262,7 +158,7 @@ public class UserServiceImpl implements UserService {
         if (findUser.isPresent()) {
             User user = findUser.get();
             UserDto userDto = UserDto.builder().username(user.getUsername()).fullname(user.getFullname())
-                    .phoneNumber(user.getPhoneNumber()).userImage(user.getUserImage()).role(user.getRole()).build();
+                    .phoneNumber(user.getPhoneNumber()).role(user.getRole()).build();
             logger.info("{} 조회 성공", username);
             return userDto;
         } else {
@@ -277,7 +173,7 @@ public class UserServiceImpl implements UserService {
         if (findUser.isPresent()) {
             User user = findUser.get();
             UserDto userDto = UserDto.builder().username(user.getUsername()).fullname(user.getFullname())
-                    .phoneNumber(user.getPhoneNumber()).userImage(user.getUserImage()).role(user.getRole()).build();
+                    .phoneNumber(user.getPhoneNumber()).role(user.getRole()).build();
             logger.info("{} 조회 성공", username);
             return userDto;
         } else {
@@ -289,7 +185,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getStudentList() {
         List<User> userList = userRepository.findAllUserByRole("rSTUDENT");
         List<UserDto> uDtoList = userList.stream().map(u -> new UserDto(u.getUsername(), null, u.getFullname(),
-                u.getPhoneNumber(), u.getUserImage(), u.getRole())).collect(Collectors.toList());
+                u.getPhoneNumber(), u.getRole())).collect(Collectors.toList());
 
         logger.info("전체 학생 회원 조회");
         return uDtoList;
@@ -298,7 +194,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getStudentListNotInTest(long examNumber) {
         List<User> userList = userRepository.findAllUserNotInTest(examNumber, "rSTUDENT");
         List<UserDto> uDtoList = userList.stream().map(u -> new UserDto(u.getUsername(), null, u.getFullname(),
-                u.getPhoneNumber(), u.getUserImage(), u.getRole())).collect(Collectors.toList());
+                u.getPhoneNumber(), u.getRole())).collect(Collectors.toList());
 
         logger.info("전체 학생 회원 조회");
         return uDtoList;
@@ -310,16 +206,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             if (findUser.isPresent()) {
-                String filename = findUser.get().getUserImage();
-                File file = new File(System.getProperty("user.dir") + "\\src\\main\\webapp\\userimg\\" + filename);
 
-                if (file.exists() && !filename.equals("img.png")) {
-                    if (file.delete()) {
-                        logger.info("{} 이미지 삭제 완료", findUser.get().getUsername());
-                    } else {
-                        logger.info("{} 이미지 삭제 실패", findUser.get().getUsername());
-                    }
-                }
                 userRepository.delete(findUser.get());
                 logger.info("{} 탈퇴 완료", username);
                 return true;

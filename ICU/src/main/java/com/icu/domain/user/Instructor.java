@@ -29,10 +29,9 @@ public class Instructor extends User {
     }
 
     @Builder
-    public Instructor(String username, String password, String fullname, String phoneNumber, String userImage, List<Exam> examList) {
-        super(username, password, fullname, phoneNumber, userImage, "rINSTUCTOR");
+    public Instructor(String username, String password, String fullname, String phoneNumber, List<Exam> examList) {
+        super(username, password, fullname, phoneNumber, "rINSTUCTOR");
         this.examList = examList;
     }
-
 
 }

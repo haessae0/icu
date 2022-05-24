@@ -12,9 +12,7 @@ import java.util.List;
 
 public interface UserService {
 
-    public Boolean insertUser(UserDto userDto, MultipartFile multipartFile);
-
-    public Boolean insertUserWithoutImage(UserDto userDto);
+    public Boolean insertUser(UserDto userDto);
 
     public ResponseEntity<UserDto> login(LoginDto loginDto, HttpServletResponse httpServletResponse);
 
@@ -28,9 +26,7 @@ public interface UserService {
 
     public List<UserDto> getStudentListNotInTest(long examNumber);
 
-    public Boolean updateUser(UserDto userDto, MultipartFile multipartFile);
-
-    public Boolean updateUserWithoutImage(UserDto userDto);
+    public Boolean updateUser(UserDto userDto);
 
     public Boolean deleteUser(String username);
 }
