@@ -18,8 +18,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @Transactional // 쿼리 도중 에러가 발생시 rollback
-    // 로그인 메소드를 수행할때 Database에서 User 정보를 조회
+    @Transactional
     public UserDetails loadUserByUsername(final String username) {
         Optional<User> userEntity = userRepository.findById(username);
         return new CustomUserDetails(userEntity.get());

@@ -56,19 +56,19 @@ public class UserController {
         }
     }
 
-    @GetMapping("/myinfo") // 프론트에서 로그인한 유저의 username 보내 조회
+    @GetMapping("/myinfo")
     @PreAuthorize("hasAnyRole('rSTUDENT','rINSTRUCTOR')")
-    public ResponseEntity<UserDto> getUser(@RequestParam String userId) {
-        return new ResponseEntity<UserDto>(userService.getUser(userId), HttpStatus.OK);
+    public ResponseEntity<UserDto> getUser(@RequestParam String username) {
+        return new ResponseEntity<UserDto>(userService.getUser(username), HttpStatus.OK);
     }
 
-    @GetMapping("/stuinfo") // 강사가 학생들 조회 @PathVariable 방식
+    @GetMapping("/stuinfo")
     @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
-    public ResponseEntity<UserDto> getStudent(@RequestParam String userId) {
-        return new ResponseEntity<UserDto>(userService.getStudent(userId), HttpStatus.OK);
+    public ResponseEntity<UserDto> getStudent(@RequestParam String username) {
+        return new ResponseEntity<UserDto>(userService.getStudent(username), HttpStatus.OK);
     }
 
-    @GetMapping("/allusers") // 강사가 전체 학생 리스트 조회 가능
+    @GetMapping("/allusers")
     @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
     public ResponseEntity<List<UserDto>> getStudentList() {
         List<UserDto> userDtoList = userService.getStudentList();
@@ -102,9 +102,9 @@ public class UserController {
 
     @DeleteMapping("/delete")
     @PreAuthorize("hasAnyRole('rSTUDENT','rINSTRUCTOR')")
-    public ResponseEntity<String> deleteUser(@RequestParam String userId) {
+    public ResponseEntity<String> deleteUser(@RequestParam String username) {
 
-        if (userService.deleteUser(userId)) {
+        if (userService.deleteUser(username)) {
             return new ResponseEntity<String>("탈퇴 성공", HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<String>("탈퇴 실패", HttpStatus.INTERNAL_SERVER_ERROR);

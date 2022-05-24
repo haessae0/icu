@@ -1,4 +1,4 @@
-package com.icu.config;
+package com.icu.util;
 
 public class UserNotFoundException extends Exception {
     public UserNotFoundException() {

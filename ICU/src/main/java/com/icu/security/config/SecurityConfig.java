@@ -1,9 +1,10 @@
-package com.icu.config;
+package com.icu.security.config;
 
-import com.icu.jwt.JwtAccessDeniedHandler;
-import com.icu.jwt.JwtAuthenticationEntryPoint;
-import com.icu.jwt.JwtSecurityConfig;
-import com.icu.jwt.TokenProvider;
+import com.icu.security.token.JwtAccessDeniedHandler;
+import com.icu.security.token.JwtAuthenticationEntryPoint;
+import com.icu.security.token.JwtSecurityConfig;
+import com.icu.security.token.TokenProvider;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

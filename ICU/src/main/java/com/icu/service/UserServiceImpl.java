@@ -4,8 +4,8 @@ import com.icu.domain.user.Instructor;
 import com.icu.domain.user.Student;
 import com.icu.domain.user.User;
 import com.icu.domain.user.UserRepository;
-import com.icu.jwt.JwtFilter;
-import com.icu.jwt.TokenProvider;
+import com.icu.security.token.JwtFilter;
+import com.icu.security.token.TokenProvider;
 import com.icu.web.dto.LoginDto;
 import com.icu.web.dto.UserDto;
 import org.slf4j.Logger;
@@ -256,32 +256,32 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public UserDto getUser(String userId) {
-        Optional<User> findUser = userRepository.findById(userId);
+    public UserDto getUser(String username) {
+        Optional<User> findUser = userRepository.findById(username);
 
         if (findUser.isPresent()) {
             User user = findUser.get();
             UserDto userDto = UserDto.builder().username(user.getUsername()).fullname(user.getFullname())
                     .phoneNumber(user.getPhoneNumber()).userImage(user.getUserImage()).role(user.getRole()).build();
-            logger.info("{} 조회 성공", userId);
+            logger.info("{} 조회 성공", username);
             return userDto;
         } else {
-            logger.info("{} 조회 실패", userId);
+            logger.info("{} 조회 실패", username);
             return null;
         }
     }
 
-    public UserDto getStudent(String userId) {
-        Optional<User> findUser = userRepository.findById(userId);
+    public UserDto getStudent(String username) {
+        Optional<User> findUser = userRepository.findById(username);
 
         if (findUser.isPresent()) {
             User user = findUser.get();
             UserDto userDto = UserDto.builder().username(user.getUsername()).fullname(user.getFullname())
                     .phoneNumber(user.getPhoneNumber()).userImage(user.getUserImage()).role(user.getRole()).build();
-            logger.info("{} 조회 성공", userId);
+            logger.info("{} 조회 성공", username);
             return userDto;
         } else {
-            logger.info("{} 조회 실패", userId);
+            logger.info("{} 조회 실패", username);
             return null;
         }
     }
@@ -305,8 +305,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public Boolean deleteUser(String userId) {
-        Optional<User> findUser = userRepository.findById(userId);
+    public Boolean deleteUser(String username) {
+        Optional<User> findUser = userRepository.findById(username);
 
         try {
             if (findUser.isPresent()) {
@@ -321,15 +321,15 @@ public class UserServiceImpl implements UserService {
                     }
                 }
                 userRepository.delete(findUser.get());
-                logger.info("{} 탈퇴 완료", userId);
+                logger.info("{} 탈퇴 완료", username);
                 return true;
             } else {
-                logger.info("{} 탈퇴 실패", userId);
+                logger.info("{} 탈퇴 실패", username);
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("{} 탈퇴 실패", userId);
+            logger.error("{} 탈퇴 실패", username);
             return false;
         }
     }

@@ -1,4 +1,4 @@
-package com.icu.jwt;
+package com.icu.security.token;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,7 +16,6 @@ public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurity
     @Override
     public void configure(HttpSecurity http) {
         JwtFilter customFilter = new JwtFilter(tokenProvider);
-        // custom 필터를 UsernamePasswordAuthenticationFilter 전에 실행
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

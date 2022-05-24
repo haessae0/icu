@@ -1,4 +1,4 @@
-package com.icu.jwt;
+package com.icu.security.token;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -27,15 +27,15 @@ public class TokenProvider implements InitializingBean {
 
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
-    public static final String AUTHORITIES_KEY = "auth";
+    private static final String AUTHORITIES_KEY = "auth";
 
     private final String secret;
-
     private final long tokenValidityInMilliseconds;
 
     private Key key;
 
-    public TokenProvider(@Value("${jwt.secret}") String secret,
+    public TokenProvider(
+            @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
@@ -47,32 +47,36 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // Authentication 객체에 포함되어 있는 아이디와 권한 정보를 담은 토큰을 생성
     public String createToken(Authentication authentication) {
-        String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("typ", "JWT");
-        headers.put("com", "ICU");
-        headers.put("alg", "HS512");
-
-        return Jwts.builder().setHeader(headers).setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities).signWith(SignatureAlgorithm.HS512, key).setExpiration(validity)
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
                 .compact();
     }
 
     // 토큰에 담겨있는 권한 정보들을 이용해 Authentication 객체를 리턴
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+        Claims claims = Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
 
         Collection<? extends GrantedAuthority> authorities = Arrays
-                .stream(claims.get(AUTHORITIES_KEY).toString().split(",")).map(SimpleGrantedAuthority::new)
+                .stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        // username, password, role
+
         User principal = new User(claims.getSubject(), "", authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
@@ -81,13 +85,8 @@ public class TokenProvider implements InitializingBean {
     // 토큰을 검증하는 역할을 수행
     public boolean validateToken(String token) {
         try {
-            JwsHeader header = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getHeader();
-            // 헤더 값으로 1차 검증
-            if (header.get("com").equals("ICU") && header.get("alg").equals("HS512")) {
-                // 2차 검증
-                Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-                return true;
-            }
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             logger.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {

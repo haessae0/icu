@@ -1,4 +1,4 @@
-package com.icu.jwt;
+package com.icu.security.token;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

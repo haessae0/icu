@@ -11,7 +11,7 @@
           <user-avatar class="image has-max-width is-aligned-center" />
           <hr />
           <b-field label="이름">
-            <b-input :value="userRealname" custom-class="is-static" readonly />
+            <b-input :value="fullName" custom-class="is-static" readonly />
           </b-field>
           <hr />
           <b-field label="이메일">
@@ -49,14 +49,14 @@ export default {
       userName: this.$store.state.userName,
       userRole: this.$store.state.userRole,
       userImage: this.$store.state.userImage,
-      userRealname: this.$store.state.userRealname
+      fullName: this.$store.state.fullName
     }
   }),
   created() {
     fetchUserInfo()
       .then(
         response =>
-          (this.$store.state.userRealname = response.data.userRealname)
+          (this.$store.state.fullName = response.data.fullName)
       )
       //
       .catch();
@@ -65,7 +65,7 @@ export default {
     titleStack() {
       return ["마이페이지"];
     },
-    ...mapState(["userName", "userEmail", "userRealname"])
+    ...mapState(["userName", "userEmail", "fullName"])
   }
 };
 </script>

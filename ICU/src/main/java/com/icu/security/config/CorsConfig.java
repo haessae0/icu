@@ -1,4 +1,4 @@
-package com.icu.config;
+package com.icu.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
