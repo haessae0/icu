@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public interface CustomUserDetailsService {
 
-    public UserDetails loadUserByUsername(final String username);
+    UserDetails loadUserByUsername(final String username);
 
-    public CustomUserDetails createUser(User user);
+    CustomUserDetails createUser(User user);
 
 }

@@ -18,17 +18,13 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider implements InitializingBean {
 
-    private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
-
     private static final String AUTHORITIES_KEY = "auth";
-
+    private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
     private final String secret;
     private final long tokenValidityInMilliseconds;
 

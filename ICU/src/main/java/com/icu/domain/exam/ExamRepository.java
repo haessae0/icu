@@ -8,6 +8,6 @@ import java.util.List;
 public interface ExamRepository extends JpaRepository<Exam, Long> {
 
     @Query(value = "SELECT * FROM exam WHERE ins_id=? ORDER BY exam_num", nativeQuery = true)
-    List<Exam> findAllTestByUsername(String username);
+    List<Exam> findAllExamByUsername(String username);
 
 }

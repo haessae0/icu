@@ -30,7 +30,7 @@ public class QuizForStudent {
 
     @Column(name = "lier")
     private String lier;
-
+ 
     @Column(name = "cheating_time")
     private String cheatingTime;
 

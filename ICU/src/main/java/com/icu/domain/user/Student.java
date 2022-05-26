@@ -28,7 +28,7 @@ public class Student extends User {
 
     @Builder
     public Student(String username, String password, String fullname, String phoneNumber,
-            List<QuizForStudent> quizList) {
+                   List<QuizForStudent> quizList) {
         super(username, password, fullname, phoneNumber, "rSTUDENT");
         this.quizList = quizList;
     }
