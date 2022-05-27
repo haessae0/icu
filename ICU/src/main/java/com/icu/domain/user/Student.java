@@ -1,6 +1,6 @@
 package com.icu.domain.user;
 
-import com.icu.domain.examforstudent.eStudent;
+import com.icu.domain.quizforstudent.QuizForStudent;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +19,7 @@ import java.util.List;
 public class Student extends User {
 
     @OneToMany(mappedBy = "studentId", cascade = CascadeType.REMOVE)
-    List<eStudent> examList = new ArrayList<eStudent>();
+    List<QuizForStudent> quizList = new ArrayList<QuizForStudent>();
 
     @Builder
     public Student() {
@@ -27,8 +27,9 @@ public class Student extends User {
     }
 
     @Builder
-    public Student(String userId, String password, String name, String phoneNumber, String profileImage, List<eStudent> examList) {
-        super(userId, password, name, phoneNumber, profileImage, "rSTUDENT");
-        this.examList = examList;
+    public Student(String username, String password, String fullname, String phoneNumber,
+                   List<QuizForStudent> quizList) {
+        super(username, password, fullname, phoneNumber, "rSTUDENT");
+        this.quizList = quizList;
     }
 }

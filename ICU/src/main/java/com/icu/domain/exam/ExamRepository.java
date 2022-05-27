@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ExamRepository extends JpaRepository<Exam, Long> {
 
-    @Query(value = "SELECT * FROM exam WHERE exam_num=? ORDER BY e_num", nativeQuery = true)
-    List<Exam> findAllExamByExamNumber(Long examNumber);
+    @Query(value = "SELECT * FROM exam WHERE ins_id=? ORDER BY exam_num", nativeQuery = true)
+    List<Exam> findAllExamByUsername(String username);
 
 }
