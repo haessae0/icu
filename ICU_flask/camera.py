@@ -1,15 +1,17 @@
 import os
 import cv2
 import threading
-from flask import Flask, render_template, Response
-import tensorflow as tf
-import numpy as np
-from yolo_helper import YoloV3, load_darknet_weights, draw_outputs
 import time
 import sys
 import pymysql
+import tensorflow as tf
+import numpy as np
+
+from flask import Flask, render_template, Response
+from yolo_helper import YoloV3, load_darknet_weights, draw_outputs
 
 yolo = YoloV3()
+# Yolo3 Darknet 로드
 load_darknet_weights(yolo, 'yolov3.weights')
 
 class RecordingThread (threading.Thread):
@@ -18,7 +20,7 @@ class RecordingThread (threading.Thread):
         self.name = name
         self.isRunning = True
         self.cap = camera 
-        fourcc = cv2.VideoWriter_fourcc(*'avc1') 
+        fourcc = cv2.VideoWriter_fourcc(*'avc1')
         self.out = cv2.VideoWriter('./static/video.mp4',fourcc, 20.0, (640,480))
 
     def run(self):
@@ -33,7 +35,7 @@ class RecordingThread (threading.Thread):
         self.out.release()
 
 class VideoCamera(object):
-    def __init__(self,start_time,time_list):
+    def __init__(self,open_time,time_list):
         # Open a camera
         self.cap = cv2.VideoCapture(0) 
         # Initialize video recording environment
@@ -41,7 +43,7 @@ class VideoCamera(object):
         self.out = None
         # Thread for recording
         self.recordingThread = None
-        self.start_time = start_time
+        self.open_time = open_time
         self.timelist = time_list
 
     def __del__(self):
@@ -62,7 +64,7 @@ class VideoCamera(object):
             count=0
 
             if self.is_record:
-                elapsed_time = time.time() - self.start_time
+                elapsed_time = time.time() - self.open_time
             for i in range(nums[0]):
                 temp = classes[0][i]
                 print("nums[i]:",nums[i])
@@ -87,4 +89,3 @@ class VideoCamera(object):
         self.is_record = False
         if self.recordingThread != None:
             self.recordingThread.stop()
-            
