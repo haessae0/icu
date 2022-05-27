@@ -29,9 +29,6 @@ public class Quiz {
     @Column(name = "quiz_selection")
     private String quizSelection;
 
-    @Column(name = "quiz_image")
-    private String quizImage;
-
     @Column(name = "quiz_answer")
     private String quizAnswer;
 
