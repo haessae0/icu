@@ -55,6 +55,26 @@ class VideoCamera(object):
             ret, frame = self.cap.read()
             if ret == False:
                 break
+            
+            ##############################
+            gaze.refresh(frame)
+            frame = gaze.annotated_frame()
+            text = ""
+            if gaze.is_blinking():
+                text = "Blinking"
+            elif gaze.is_right():
+                text = "Looking right"
+            elif gaze.is_left():
+                text = "Looking left"
+            elif gaze.is_center():
+                text = "Looking center"
+
+            cv2.putText(frame, text, (90, 60), cv2.FONT_HERSHEY_DUPLEX, 1.6, (147, 58, 31), 2)
+            left_pupil = gaze.pupil_left_coords()
+            right_pupil = gaze.pupil_right_coords()
+
+            ##############################
+            
             img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             img = cv2.resize(img, (320, 320))
             img = img.astype(np.float32)
