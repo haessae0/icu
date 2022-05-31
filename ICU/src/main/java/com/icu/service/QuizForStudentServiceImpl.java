@@ -9,6 +9,7 @@ import com.icu.domain.user.StudentRepository;
 import com.icu.web.dto.QuizForStudentDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
 public class QuizForStudentServiceImpl implements QuizForStudentService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final ExamRepository examRepository;
