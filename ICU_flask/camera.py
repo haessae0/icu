@@ -13,6 +13,7 @@ from yolo_helper import YoloV3, load_darknet_weights, draw_outputs
 
 yolo = YoloV3()
 gaze = GazeTracking()
+doubt_eye=0
 # Yolo3 Darknet 로드
 load_darknet_weights(yolo, 'yolov3.weights')
 
@@ -57,17 +58,18 @@ class VideoCamera(object):
                 break
             
             ##############################
-            gaze.refresh(frame)
-            frame = gaze.annotated_frame()
-            text = ""
             if gaze.is_blinking():
-                text = "Blinking"
+                text = " "
             elif gaze.is_right():
                 text = "Looking right"
+                doubt_eye=doubt_eye+1
             elif gaze.is_left():
                 text = "Looking left"
+                doubt_eye=doubt_eye+1
             elif gaze.is_center():
                 text = "Looking center"
+            else:
+                doubt_eye=doubt_eye+1
 
             cv2.putText(frame, text, (90, 60), cv2.FONT_HERSHEY_DUPLEX, 1.6, (147, 58, 31), 2)
             left_pupil = gaze.pupil_left_coords()
@@ -96,6 +98,8 @@ class VideoCamera(object):
                     self.timelist.append(time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
             if self.is_record and count > 1: #count != 1: 'No person detected' & 'More than one person detected'
                 self.timelist.append(time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
+            if doubt_eye >=300:
+                    self.timelist.append(time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
             frame = draw_outputs(frame, (boxes, scores, classes, nums), class_names)
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
