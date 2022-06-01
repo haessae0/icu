@@ -8,7 +8,7 @@
           has-icon
           aria-close-label="Close message"
         >
-          {{ this.test.testGuide }}
+          {{ this.test.examDescribe }}
         </b-message>
         <b-notification
           type="is-success is-light"
@@ -65,8 +65,8 @@ import { setCookie } from "../utils/cookies";
 export default {
   data: function() {
     return {
-      testNum: this.$route.params.testNum,
-      username: this.$store.state.username,
+      examNumber: this.$route.params.examNumber,
+      userName: this.$store.state.userName,
       test: ""
     };
   },
@@ -82,7 +82,7 @@ export default {
         "Authorization"
       ] = sessionStorage.getItem("Authorization");
       instance
-        .get("http://localhost:8000/test/get/" + this.testNum)
+        .get("http://localhost:8000/exam/get/" + this.examNumber)
         .then(response => {
           this.test = response.data;
           console.log(response.data);
@@ -94,7 +94,7 @@ export default {
     // flask로 username과 testnum 정보를 전송
     sendInfo() {
       setCookie("Authorization", sessionStorage.getItem("Authorization"), 1);
-      location.href = `http://localhost:5000/${this.username}/${this.testNum}`;
+      location.href = `http://localhost:5000/${this.userName}/${this.examNumber}`;
     }
   },
   mounted() {

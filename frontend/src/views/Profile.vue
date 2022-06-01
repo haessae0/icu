@@ -48,7 +48,6 @@ export default {
     loginUser: {
       userName: this.$store.state.userName,
       userRole: this.$store.state.userRole,
-      userImage: this.$store.state.userImage,
       fullname: this.$store.state.fullname
     }
   }),

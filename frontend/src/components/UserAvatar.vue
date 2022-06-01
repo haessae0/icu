@@ -8,8 +8,6 @@
 import { mapState } from "vuex";
 import axios from "axios";
 import { getUserIdFromSession } from "../utils/session";
-import { fetchUserInfo } from "../api/auth.js";
-
 export default {
   name: "UserAvatar",
   props: {
@@ -21,16 +19,9 @@ export default {
   data: () => ({
     loginUser: {
       userName: this.$store.state.userName,
-      userRole: this.$store.state.userRole,
-      userImage: this.$store.state.userImage
+      userRole: this.$store.state.userRole
     }
   }),
-  // this.userImage =
-  created() {
-    fetchUserInfo()
-      .then(response => (this.$store.state.userImage = response.data.userImage))
-      .catch();
-  },
   computed: {
     newUserAvatar() {
       if (this.avatar) {
@@ -45,10 +36,10 @@ export default {
         return `http://localhost:8000/userimg/${this.userImage}`;
       } else {
         // 로그인 안했을 경우
-        return `http://localhost:8000/userimg/default.png`;
+        return `http://localhost:8000/userimg/img.png`;
       }
     },
-    ...mapState(["userAvatar", "userName", "userRole", "imgURL", "userImage"])
+    ...mapState(["userAvatar", "userName", "userRole", "imgURL"])
   },
   methods: {
     fetch_Image() {

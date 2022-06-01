@@ -22,7 +22,7 @@
                 {{ props.row.username }}
               </b-table-column>
               <b-table-column
-                field="userRealName"
+                field="fullname"
                 label="응시자"
                 v-slot="props"
                 centered
@@ -30,7 +30,7 @@
                 {{ props.row.userRealName }}
               </b-table-column>
               <b-table-column
-                field="testResult"
+                field="quizResult"
                 label="점수"
                 v-slot="props"
                 centered
@@ -84,12 +84,12 @@
             {{ props.row.username }}
           </b-table-column>
           <b-table-column
-            field="userRealname"
+            field="fullname"
             label="응시자"
             v-slot="props"
             centered
           >
-            {{ props.row.userRealname }}
+            {{ props.row.fullname }}
           </b-table-column>
 
           <b-table-column label="추가" v-slot="props" centered>
@@ -129,7 +129,7 @@ export default {
       isCardModalActive: false,
       applicants: "",
       students: "",
-      testNum: this.$route.params.testNum
+      examNumber: this.$route.params.examNumber
     };
   },
   computed: {
@@ -141,7 +141,7 @@ export default {
     //특정 시험에 할당된 응시자 검색 로직
     getAllApplicants() {
       axios
-        .get("http://localhost:8000/stutest/getstu/" + this.testNum, {
+        .get("http://localhost:8000/quizforstudent/getqfs/" + this.examNumber, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -157,7 +157,7 @@ export default {
     },
     getAllStudents() {
       axios
-        .get("http://localhost:8000/user/notest/" + this.testNum, {
+        .get("http://localhost:8000/user/notest/" + this.examNumber, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -178,10 +178,10 @@ export default {
       ] = sessionStorage.getItem("Authorization");
       instance
         .post(
-          "http://localhost:8000/stutest/insert/" +
+          "http://localhost:8000/quizforstudent/insert/" +
             userName +
             "/" +
-            this.testNum
+            this.examNumber
         )
         .then(response => {
           console.log(response);
@@ -197,10 +197,10 @@ export default {
     deleteApplicant(userName) {
       axios
         .delete(
-          "http://localhost:8000/stutest/delete/" +
+          "http://localhost:8000/quizforstudent/delete/" +
             userName +
             "/" +
-            this.testNum,
+            this.examNumber,
           {
             headers: {
               Authorization: sessionStorage.getItem("Authorization")
@@ -221,7 +221,7 @@ export default {
     manageStudentVideo(userName) {
       return this.$router.push({
         name: "TestSupervision",
-        params: { testNum: this.testNum, userName: userName }
+        params: { examNumber: this.examNumber, userName: userName }
       });
     },
     success() {

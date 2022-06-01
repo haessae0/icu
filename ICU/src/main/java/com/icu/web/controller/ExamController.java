@@ -19,25 +19,25 @@ public class ExamController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<Long> createExam(@RequestParam String username, @RequestBody ExamDto examDto) {
         return new ResponseEntity<>(examService.createExam(username, examDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/get")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<List<ExamDto>> getExamByUsername(@RequestParam String username) {
         return new ResponseEntity<>(examService.getExamByUsername(username), HttpStatus.OK);
     }
 
     @GetMapping("/get/{examNumber}")
-    @PreAuthorize("hasAnyRole('rSTUDENT', 'rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('STUDENT', 'INSTRUCTOR')")
     public ResponseEntity<ExamDto> getExam(@PathVariable Long examNumber) {
         return new ResponseEntity<>(examService.getExam(examNumber), HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<String> updateExam(@RequestBody ExamDto examDto) {
         if (examService.updateExam(examDto)) {
             return new ResponseEntity<>("수정 성공", HttpStatus.OK);
@@ -47,7 +47,7 @@ public class ExamController {
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<String> deleteExam(@RequestParam String username, @RequestParam Long examNumber) {
         if (examService.deleteExam(username, examNumber)) {
             return new ResponseEntity<>("삭제 성공", HttpStatus.NO_CONTENT);

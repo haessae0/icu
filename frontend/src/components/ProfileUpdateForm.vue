@@ -1,10 +1,18 @@
 <template>
   <card-component title="프로필 수정" icon="account-circle">
     <form @submit.prevent="submit">
+      <b-field horizontal label="사진">
+        <input
+          type="file"
+          id="file"
+          ref="file"
+          v-on:change="handleFileUpload()"
+        />
+      </b-field>
       <hr />
       <b-field horizontal label="이름" message="필수 입력 사항">
         <b-input
-          v-model="fullname"
+          v-model="userRealname"
           name="name"
           placeholder="이름을 재입력해주세요"
           required
@@ -62,15 +70,16 @@ export default {
   data: () => ({
     username: "",
     password: "",
-    fullname: "",
+    userRealname: "",
     phoneNumber: "",
+    userImage: "",
     role: ""
   }),
   created() {
     fetchUserInfo()
       .then(response => {
         this.$store.state.userName = response.data.username;
-        this.$store.state.fullname = response.data.fullname;
+        this.$store.state.userRealname = response.data.userRealname;
         this.$store.state.phoneNumber = response.data.phoneNumber;
       })
       .catch();
@@ -82,25 +91,26 @@ export default {
     isPhoneNumberValid() {
       return validatePhoneNumber(this.phoneNumber); //phonenumber가 핸드폰 번호 형식이 맞는지 체크
     },
-    ...mapState(["userName", "fullname", "phoneNumber"])
+    ...mapState(["userName", "userRealname", "phoneNumber"])
   },
   mounted() {
     this.form.name = this.userName;
-    this.form.realname = this.fullname;
+    this.form.realname = this.userRealname;
   },
   methods: {
     updateProfileForm() {
       let formData = new FormData();
       formData.append("username", this.userName);
       formData.append("password", this.password);
-      formData.append("fullname", this.fullname);
+      formData.append("userRealname", this.userRealname);
       formData.append("phoneNumber", this.phoneNumber);
+      formData.append("file", this.file);
       formData.append("role", this.role);
       axios
         .put("http://localhost:8000/user/update", formData, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization"),
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*"
           }
         })
@@ -120,9 +130,13 @@ export default {
     initForm() {
       this.username = "";
       this.password = "";
-      this.fullname = "";
+      this.userRealName = "";
       this.phoneNumber = "";
+      this.userImage = "";
       this.role = "";
+    },
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
     },
     created() {
       fetchUserInfo()

@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("rSTUDENT")
+@DiscriminatorValue("ROLE_STUDENT")
 public class Student extends User {
 
     @OneToMany(mappedBy = "studentId", cascade = CascadeType.REMOVE)
@@ -28,8 +28,8 @@ public class Student extends User {
 
     @Builder
     public Student(String username, String password, String fullname, String phoneNumber,
-                   List<QuizForStudent> quizList) {
-        super(username, password, fullname, phoneNumber, "rSTUDENT");
+            List<QuizForStudent> quizList) {
+        super(username, password, fullname, phoneNumber, "ROLE_STUDENT");
         this.quizList = quizList;
     }
 }
