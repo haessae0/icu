@@ -24,4 +24,4 @@ pnpm-debug.log*
 
 
 # spring boot file
-.build.gradle
+.pom.xml

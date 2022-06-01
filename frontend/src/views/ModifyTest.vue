@@ -9,8 +9,8 @@
         <b-field label="시험명" message="과목명을 적어주세요." horizontal>
           <b-input
             placeholder="시험명 : 소제목"
-            v-model="form.testName"
-            name="testName"
+            v-model="form.examName"
+            name="examName"
             maxlength="150"
             required
           />
@@ -24,7 +24,7 @@
               rounded
               label="시험 시작 시간"
               icon="calendar-today"
-              v-model="form.startTime"
+              v-model="form.openTime"
               :localISOdt="localISOdt"
               :datepicker="{ showWeekNumber }"
               :timepicker="{ enableSeconds, hourFormat }"
@@ -40,7 +40,7 @@
             <b-datetimepicker
               rounded
               icon="calendar-today"
-              v-model="form.endTime"
+              v-model="form.closeTime"
               :localISOdt="localISOdt"
               :datepicker="{ showWeekNumber }"
               :timepicker="{ enableSeconds, hourFormat }"
@@ -81,10 +81,10 @@
               sortable
               v-slot="props"
             >
-              {{ props.row.proNum }}
+              {{ props.row.quizNum }}
             </b-table-column>
             <b-table-column label="문제" field="문제" sortable v-slot="props">
-              {{ props.row.proDes }}
+              {{ props.row.quizDescribe }}
             </b-table-column>
             <b-table-column
               label="보기 1번"
@@ -92,7 +92,7 @@
               sortable
               v-slot="props"
             >
-              {{ props.row.proSel[0] }}
+              {{ props.row.quizSelection[0] }}
             </b-table-column>
             <b-table-column
               label="보기 2번"
@@ -100,7 +100,7 @@
               sortable
               v-slot="props"
             >
-              {{ props.row.proSel[1] }}
+              {{ props.row.quizSelection[1] }}
             </b-table-column>
             <b-table-column
               label="보기 3번"
@@ -108,19 +108,19 @@
               sortable
               v-slot="props"
             >
-              {{ props.row.proSel[2] }}
+              {{ props.row.quizSelection[2] }}
             </b-table-column>
             <b-table-column label="보기 4번" field="보기 4번" v-slot="props">
-              {{ props.row.proSel[3] }}
+              {{ props.row.quizSelection[3] }}
             </b-table-column>
             <b-table-column label="답" field="보기 4번" v-slot="props">
-              {{ props.row.proAnswer }}
+              {{ props.row.quizAnswer }}
             </b-table-column>
             <b-table-column label="수정 및 삭제" v-slot="props" centered>
               <b-button
                 type="is-success"
                 outlined
-                v-on:click="updateTestProblems(props.row.proId)"
+                v-on:click="updateTestProblems(props.row.quizId)"
                 position="is-centered"
                 size="is-small"
                 >수정</b-button
@@ -128,7 +128,7 @@
               <b-button
                 type="is-danger"
                 outlined
-                v-on:click="deleteTestProblems(props.row.proId)"
+                v-on:click="deleteTestProblems(props.row.quizId)"
                 position="is-centered"
                 size="is-small"
                 >삭제</b-button
@@ -143,7 +143,7 @@
         <b-field label="문항 번호" horizontal>
           <b-numberinput
             step="1"
-            v-model="form.proNum"
+            v-model="form.quizNum"
             style="width: 200px;"
           ></b-numberinput>
         </b-field>
@@ -155,7 +155,7 @@
           <b-input
             type="textarea"
             placeholder="시험 문제 만들기"
-            v-model="form.proDes"
+            v-model="form.quizDescribe"
             maxlength="255"
           />
         </b-field>
@@ -167,9 +167,9 @@
           <b-field label="1번" :label-position="labelPosition">
             <b-input
               placeholder="1번 보기를 입력하세요."
-              name="form.proSel[]"
+              name="form.quizSelection[]"
               v-on:input="changed"
-              v-model="form.proSel[0]"
+              v-model="form.quizSelection[0]"
               maxlength="150"
             ></b-input>
           </b-field>
@@ -177,8 +177,8 @@
             <b-input
               placeholder="2번 보기를 입력하세요."
               v-on:input="changed"
-              name="form.proSel[]"
-              v-model="form.proSel[1]"
+              name="form.quizSelection[]"
+              v-model="form.quizSelection[1]"
               maxlength="150"
             >
             </b-input>
@@ -187,7 +187,7 @@
             <b-input
               placeholder="3번 보기를 입력하세요."
               v-on:input="changed"
-              name="form.proSel[]"
+              name="form.quizSelection[]"
               v-model="form.proSel[2]"
               maxlength="150"
             ></b-input>
@@ -196,7 +196,7 @@
             <b-input
               placeholder="4번 보기를 입력하세요."
               v-on:input="changed"
-              name="form.proSel[]"
+              name="form.quizSelection[]"
               v-model="form.proSel[3]"
               maxlength="150"
             ></b-input>
@@ -204,13 +204,13 @@
         </b-field>
         <b-field
           label="정답"
-          name="proAnswer"
+          name="quizAnswer"
           message="당신이 낸 문항의 정답을 작성하세요."
           horizontal
         >
           <b-field label="정답" :label-position="labelPosition">
             <b-input
-              v-model="form.proAnswer"
+              v-model="form.quizAnswer"
               placeholder="정답을 입력하세요."
               maxlength="150"
             ></b-input>
@@ -254,7 +254,7 @@ export default {
       test: "",
       problems: "",
       problems2: "",
-      testNum: this.$route.params.testNum,
+      examNumber: this.$route.params.examNumber,
       userName: this.$store.state.userName,
       showWeekNumber: false,
       enableSeconds: true,
@@ -265,16 +265,15 @@ export default {
       selectedOptions: [],
       isLoading: false,
       form: {
-        testName: "",
-        endTime: "",
-        startTime: "",
-        testGuide: "",
-        proId: "",
-        proNum: "",
-        proDes: "",
-        proSel: "",
-        proImage: "",
-        proAnswer: ""
+        examName: "",
+        closeTime: "",
+        openTime: "",
+        examDescribe: "",
+        quizId: "",
+        quizNum: "",
+        quizDescribe: "",
+        quizSelection: "",
+        quizAnswer: ""
       }
     };
   },
@@ -287,7 +286,7 @@ export default {
   methods: {
     getTestForm() {
       axios
-        .get("http://localhost:8000/test/get/" + this.testNum, {
+        .get("http://localhost:8000/exam/get/" + this.examNumber, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -297,10 +296,10 @@ export default {
           console.log("확인");
           console.log(this.test);
           //데이터 바인딩
-          this.form.endTime = this.test.endTime;
-          this.form.startTime = this.test.startTime;
-          this.form.testName = this.test.testName;
-          this.form.testGuide = this.test.testGuide;
+          this.form.closeTime = this.test.closeTime;
+          this.form.openTime = this.test.openTime;
+          this.form.examName = this.test.examName;
+          this.form.examDescribe = this.test.examDescribe;
         })
         .catch(e => {
           console.log(e);
@@ -309,7 +308,7 @@ export default {
     },
     getTestProblems() {
       axios
-        .get("http://localhost:8000/testpro/get?testnum=" + this.testNum, {
+        .get("http://localhost:8000/quiz/get?examNumber=" + this.examNumber, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -325,14 +324,14 @@ export default {
     },
     updateTestForm() {
       const addTestData = {
-        testNum: this.testNum,
-        testName: this.form.testName,
-        endTime: this.form.endTime,
-        startTime: this.form.startTime,
-        testGuide: this.form.testGuide
+        examNumber: this.examNumber,
+        examName: this.form.examName,
+        closeTime: this.form.closeTime,
+        openTime: this.form.openTime,
+        examDescribe: this.form.examDescribe
       };
       axios
-        .put("http://localhost:8000/test/update", addTestData, {
+        .put("http://localhost:8000/exam/update", addTestData, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -349,10 +348,10 @@ export default {
           this.errors.push(e);
         });
     },
-    deleteTestProblems(proid) {
+    deleteTestProblems(quizId) {
       axios
         .delete(
-          `http://localhost:8000/testpro/delete?proid=${proid}&testnum=${this.testNum}`,
+          `http://localhost:8000/quiz/delete?quizId=${quizId}&examNumber=${this.examNumber}`,
           {
             headers: {
               Authorization: sessionStorage.getItem("Authorization")
@@ -369,14 +368,13 @@ export default {
     },
     updateTestProblem2() {
       let formData = new FormData();
-      formData.append("proId", this.form.proId);
-      formData.append("proNum", this.form.proNum);
-      formData.append("proDes", this.form.proDes);
-      formData.append("proSel", this.form.proSel);
-      formData.append("proImage", this.form.proImage);
-      formData.append("proAnswer", this.form.proAnswer);
+      formData.append("quizId", this.form.quizId);
+      formData.append("quizNum", this.form.quizNum);
+      formData.append("quizDescribe", this.form.quizDescribe);
+      formData.append("quizSelection", this.form.quizSelection);
+      formData.append("quizAnswer", this.form.quizAnswer);
       axios
-        .put("http://localhost:8000/testpro/update", formData, {
+        .put("http://localhost:8000/quiz/update", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: sessionStorage.getItem("Authorization")
@@ -393,9 +391,9 @@ export default {
           this.errors.push(e);
         });
     },
-    updateTestProblems(proId) {
+    updateTestProblems(quizId) {
       axios
-        .get("http://localhost:8000/testpro/get/" + proId, {
+        .get("http://localhost:8000/quiz/get/" + quizId, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -405,11 +403,11 @@ export default {
           console.log(this.problems2);
           console.log("확인");
           //데이터 바인딩
-          this.form.proId = this.problems2.proId;
-          this.form.proDes = this.problems2.proDes;
-          this.form.proNum = this.problems2.proNum;
-          this.form.proSel = this.problems2.proSel;
-          this.form.proAnswer = this.problems2.proAnswer;
+          this.form.quizId = this.problems2.quizId;
+          this.form.quizDescribe = this.problems2.quizDescribe;
+          this.form.quizNum = this.problems2.quizNum;
+          this.form.quizSelection = this.problems2.quizSelection;
+          this.form.quizAnswer = this.problems2.quizAnswer;
         })
         .catch(e => {
           console.log(e);

@@ -19,7 +19,7 @@ public class QuizController {
     }
 
     @PostMapping("/create/{examNumber}")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<String> insertQuiz(@PathVariable long examNumber, QuizDto quizDto) {
         Boolean check = quizService.insertQuiz(examNumber, quizDto);
 
@@ -31,19 +31,19 @@ public class QuizController {
     }
 
     @GetMapping("/get")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<List<QuizDto>> getQuizByExamNumber(@RequestParam long examNumber) {
         return new ResponseEntity<>(quizService.getQuizByExamNumber(examNumber), HttpStatus.OK);
     }
 
     @GetMapping("/get/{quizId}")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<QuizDto> getQuiz(@PathVariable long quizId) {
         return new ResponseEntity<>(quizService.getQuiz(quizId), HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<String> updateQuiz(QuizDto quizDto) {
         Boolean check = quizService.updateQuiz(quizDto);
 
@@ -55,7 +55,7 @@ public class QuizController {
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<String> deleteQuiz(@RequestParam long quizId, @RequestParam long examNumber) {
 
         if (quizService.deleteQuiz(quizId, examNumber)) {

@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    @PreAuthorize("hasAnyRole('rSTUDENT','rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('STUDENT','INSTRUCTOR')")
     public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
 
         if (userService.logout(httpServletRequest)) {
@@ -50,33 +50,33 @@ public class UserController {
     }
 
     @GetMapping("/myinfo")
-    @PreAuthorize("hasAnyRole('rSTUDENT','rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('STUDENT','INSTRUCTOR')")
     public ResponseEntity<UserDto> getUser(@RequestParam String username) {
         return new ResponseEntity<UserDto>(userService.getUser(username), HttpStatus.OK);
     }
 
     @GetMapping("/stuinfo")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<UserDto> getStudent(@RequestParam String username) {
         return new ResponseEntity<UserDto>(userService.getStudent(username), HttpStatus.OK);
     }
 
     @GetMapping("/allusers")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<List<UserDto>> getStudentList() {
         List<UserDto> userDtoList = userService.getStudentList();
         return new ResponseEntity<List<UserDto>>(userDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/notest/{examNumber}")
-    @PreAuthorize("hasAnyRole('rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     public ResponseEntity<List<UserDto>> getStudentListNotInTest(@PathVariable long examNumber) {
         List<UserDto> userDtoList = userService.getStudentListNotInTest(examNumber);
         return new ResponseEntity<List<UserDto>>(userDtoList, HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    @PreAuthorize("hasAnyRole('SrTUDENT','rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('STUDENT','INSTRUCTOR')")
     public ResponseEntity<String> updateUser(UserDto userDto) {
         Boolean check = userService.updateUser(userDto);
 
@@ -88,7 +88,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("hasAnyRole('rSTUDENT','rINSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('STUDENT','INSTRUCTOR')")
     public ResponseEntity<String> deleteUser(@RequestParam String username) {
 
         if (userService.deleteUser(username)) {
