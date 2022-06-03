@@ -1,28 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
-
-//라우터 가드를 사용하려면 주석을 없애야함 현재 로그인 데이터가 없기에 원할한 페이지 체크를 위해서 주석을 침
-
-// 라우터 가드
-// 로그인 유저 거절
-// const rejectAuthUser = (to, from, next) => {
-//   if (sessionStorage.getItem("user") != null) {
-//     next("/");
-//   } else {
-//     next();
-//   }
-// };
-// // 비 로그인 유저 거절
-// const onlyAuthUser = (to, from, next) => {
-//   if (sessionStorage.getItem("user") == null) {
-//     next("/signin");
-//   } else {
-//     next();
-//   }
-// };
 
 const routes = [
   {
@@ -39,9 +18,8 @@ const routes = [
     },
     path: "/profile",
     name: "Profile",
-    // beforeEnter: onlyAuthUser,
     component: () =>
-      import(/* webpackChunkName: "profile" */ "../views/Profile.vue")
+      import("../views/Profile.vue")
   },
   {
     meta: {
@@ -49,7 +27,6 @@ const routes = [
     },
     path: "/testguide",
     name: "TestGuide",
-    // beforeEnter: onlyAuthUser,
     component: () => import("../views/TestGuide.vue")
   },
   {
@@ -67,7 +44,6 @@ const routes = [
     },
     path: "/student",
     name: "StudentTestList",
-    // beforeEnter: onlyAuthUser,
     component: () => import("../views/StudentTestList.vue")
   },
   {
@@ -76,7 +52,6 @@ const routes = [
     },
     path: "/modifytest",
     name: "ModifyTest",
-    // beforeEnter: onlyAuthUser,
     component: () => import("../views/ModifyTest.vue")
   },
   {
@@ -85,7 +60,6 @@ const routes = [
     },
     path: "/testsupervision",
     name: "TestSupervision",
-    // beforeEnter: onlyAuthUser,
     component: () => import("../views/TestSupervision.vue")
   },
   {
@@ -94,7 +68,6 @@ const routes = [
     },
     path: "/managestudent",
     name: "ManageStudent",
-    // beforeEnter: onlyAuthUser,
     component: () => import("../views/ManageStudent.vue")
   },
   {
@@ -103,7 +76,6 @@ const routes = [
     },
     path: "/addtest",
     name: "AddTest",
-    // beforeEnter: onlyAuthUser,
     component: () => import("../views/AddTest.vue")
   },
   {
@@ -112,7 +84,6 @@ const routes = [
     },
     path: "/problems",
     name: "AddTestProblems",
-    // beforeEnter: onlyAuthUser,
     component: () => import("../views/AddTestProblems.vue")
   },
   {
@@ -121,7 +92,6 @@ const routes = [
     },
     path: "/instructor",
     name: "InstructorTest",
-    // beforeEnter: onlyAuthUser,
     component: () => import("../views/InstructorTest.vue")
   },
   {
@@ -139,7 +109,6 @@ const routes = [
     },
     path: "/signup",
     name: "Sign Up",
-    // beforeEnter: rejectAuthUser,
     component: () => import("../views/SignUp.vue"),
     props: true
   },
@@ -150,7 +119,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: "history", // # 값 제거 /#/
+  mode: "history",
   base: process.env.BASE_URL,
   routes,
   scrollBehavior(to, from, savedPosition) {

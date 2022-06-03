@@ -3,6 +3,9 @@
     <div class="hero-body">
       <div class="level">
         <div class="level-left">
+          <div>
+            ㅤㅤㅤㅤㅤㅤㅤㅤㅤ
+          </div>
           <div class="level-item">
             <h1 class="title">
               <slot />

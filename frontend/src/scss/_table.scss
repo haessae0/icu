@@ -20,12 +20,6 @@ table.table {
   }
 
   td {
-    .image {
-      margin: 0 auto;
-      width: $table-avatar-size;
-      height: $table-avatar-size;
-    }
-
     &.is-progress-col {
       min-width: 5rem;
       vertical-align: middle;
@@ -141,14 +135,6 @@ table.table {
           &.is-progress-col {
             progress {
               width: 100%;
-            }
-          }
-
-          &.is-image-cell {
-            .image {
-              width: $table-avatar-size-mobile;
-              height: auto;
-              margin: 0 auto $default-padding * .25;
             }
           }
         }

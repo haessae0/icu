@@ -18,9 +18,6 @@ export default {
     if (payload.email) {
       state.userEmail = payload.email;
     }
-    if (payload.avatar) {
-      state.userAvatar = payload.avatar;
-    }
   },
 
   /* Aside Mobile */

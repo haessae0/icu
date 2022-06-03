@@ -4,6 +4,7 @@ import "@/scss/main.scss";
 /* Core */
 import Vue from "vue";
 import Buefy from "buefy";
+import 'buefy/dist/buefy.css'
 
 /* Router & Store */
 import router from "./router";

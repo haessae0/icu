@@ -5,29 +5,23 @@ section.hero.is-hero-bar {
   .hero-body {
     padding: $default-padding;
 
-    .level-item {
-      &.is-hero-avatar-item {
-        margin-right: $default-padding;
-      }
-
-      > div > .level {
-        margin-bottom: $default-padding * .5;
-      }
-
-      .subtitle + p {
-        margin-top: $default-padding * .5;
-      }
+    >div>.level {
+      margin-bottom: $default-padding * .5;
     }
 
-    .button {
-      &.is-hero-button {
-        background-color: rgba($white, .5);
-        font-weight: 300;
-        @include transition(background-color);
+    .subtitle+p {
+      margin-top: $default-padding * .5;
+    }
+  }
 
-        &:hover {
-          background-color: $white;
-        }
+  .button {
+    &.is-hero-button {
+      background-color: rgba($white, .5);
+      font-weight: 300;
+      @include transition(background-color);
+
+      &:hover {
+        background-color: $white;
       }
     }
   }
