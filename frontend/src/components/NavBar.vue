@@ -1,5 +1,7 @@
 <template>
   <nav v-show="isNavBarVisible" id="navbar-main" class="navbar is-fixed-top">
+  <img src="../assets/logo2.jpg" width="30" height="28" />
+  <span slot="label"> <a id="custom" href="/"> ICU</a></span>
     <div class="navbar-brand">
       <a
         class="navbar-item is-hidden-desktop"
@@ -21,8 +23,7 @@
       :class="{ 'is-active': isMenuNavBarActive }"
     >
       <div class="navbar-end">
-        <nav-bar-menu class="has-divider has-user-avatar">
-          <user-avatar />
+        <nav-bar-menu class="has-divider">
           <div class="is-user-name">
             <template v-if="authorization != null">
               <span>{{ userName }}</span>
@@ -54,10 +55,10 @@
           </div>
         </nav-bar-menu>
         <a
-          class="navbar-item is-desktop-icon-only"
-          title="Log out"
-          @click="logout"
-        >
+          class="navbar-item is-desktop-icon-only">
+        </a>
+        <a
+          class="navbar-item is-desktop-icon-only">
         </a>
       </div>
     </div>
@@ -67,12 +68,11 @@
 <script>
 import { mapState } from "vuex";
 import NavBarMenu from "@/components/NavBarMenu";
-import UserAvatar from "@/components/UserAvatar";
+
 import axios from "axios";
 export default {
   name: "NavBar",
   components: {
-    UserAvatar,
     NavBarMenu
   },
   data() {
@@ -94,7 +94,6 @@ export default {
     ...mapState([
       "isNavBarVisible",
       "isAsideMobileExpanded",
-      "isDarkModeActive",
       "userName"
     ])
   },
@@ -110,9 +109,6 @@ export default {
     menuNavBarToggle() {
       this.isMenuNavBarActive = !this.isMenuNavBarActive;
     },
-    darkModeToggle() {
-      this.$store.commit("darkModeToggle");
-    },
     logout() {
       let instance = axios.create();
       instance.defaults.headers.common[
@@ -125,7 +121,7 @@ export default {
           sessionStorage.removeItem("Authorization");
           // this.$router.push({ name: "Home" });
           location.reload();
-          location.href = "http://localhost:8081/";
+          location.href = "http://localhost:8080/";
         })
         .catch(error => {
           this.danger();
@@ -151,6 +147,6 @@ export default {
 </script>
 <style scoped>
 a#custom {
-  color: #00b274 !important;
+  color: #ffb300 !important;
 }
 </style>

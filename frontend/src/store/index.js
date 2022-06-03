@@ -28,10 +28,6 @@ export default new Vuex.Store({
     role: "",
 
     userEmail: null,
-    userAvatar: null,
-    // sessionStorage.getItem('LoginUser')
-    //     ? JSON.parse(sessionStorage.getItem("LoginUser"))
-    //     : null
     /* NavBar */
     isNavBarVisible: true,
 

@@ -22,7 +22,7 @@ a {
 	text-decoration: none;
 }
 a:hover {
-	color: #3fc1c9;
+	color: #ff9d00;
 }
 
 /*--- LAYOUT ---*/
@@ -106,10 +106,10 @@ a:hover {
 	margin-bottom: 1rem;
 }
 .form input.valid {
-	border: 1px solid #21b314;
+	border: 1px solid #1c43a5;
 }
 .form input.invalid {
-	border: 1px solid red;
+	border: 1px solid rgb(196, 211, 34);
 }
 .form div:nth-last-child(2) {
 	margin-bottom: 0.5rem;

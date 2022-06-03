@@ -12,24 +12,19 @@
     </template>
     <transition name="page">
       <router-view></router-view>
-    </transition>
-    <footer-bar />
+    </transition> 
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import NavBar from "@/components/NavBar";
-import AsideMenu from "@/components/AsideMenu";
-import FooterBar from "@/components/FooterBar";
 import { mapState } from "vuex";
 import { getUserRoleFromSession } from "../src/utils/session";
 
 export default {
   name: "home",
   components: {
-    FooterBar,
-    AsideMenu,
     NavBar
   },
   data() {
@@ -143,8 +138,7 @@ export default {
   created() {
     this.$store.commit("user", {
       name: "",
-      email: "",
-      avatar: ""
+      email: ""
     });
   },
   methods: {

@@ -36,7 +36,6 @@ $navbar-input-placeholder-color: $grey-lighter;
 $navbar-box-shadow: 0 1px $base-color-light;
 $navbar-divider-border: 1px solid $base-color-light;
 $navbar-item-h-padding: $default-padding * .75;
-$navbar-avatar-size: 1.75rem;
 
 /* Aside: Bulma override */
 $menu-item-radius: 0;
@@ -77,10 +76,6 @@ $card-header-border-bottom-color: $base-color-light;
 
 /* Table: Bulma override */
 $table-cell-border: 1px solid $white-bis;
-
-/* Table: specifics */
-$table-avatar-size: $size-base * 1.5;
-$table-avatar-size-mobile: 25vw;
 
 /* Form */
 $checkbox-border: 1px solid $base-color;

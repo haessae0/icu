@@ -91,7 +91,7 @@ export default {
           );
           // this.$router.push({ name: "Home" });
           location.reload();
-          location.href = "http://localhost:8081/";
+          location.href = "http://localhost:8080/";
         })
         .catch(error => {
           console.log(error);

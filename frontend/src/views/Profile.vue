@@ -8,7 +8,6 @@
       <tiles>
         <profile-update-form class="tile is-child" />
         <card-component title="프로필" icon="account" class="tile is-child">
-          <user-avatar class="image has-max-width is-aligned-center" />
           <hr />
           <b-field label="이름">
             <b-input :value="fullname" custom-class="is-static" readonly />
@@ -31,13 +30,11 @@ import TitleBar from "@/components/TitleBar";
 import HeroBar from "@/components/HeroBar";
 import ProfileUpdateForm from "@/components/ProfileUpdateForm";
 import Tiles from "@/components/Tiles";
-import UserAvatar from "@/components/UserAvatar";
 import { fetchUserInfo } from "../api/auth.js";
 
 export default {
   name: "Profile",
   components: {
-    UserAvatar,
     Tiles,
     ProfileUpdateForm,
     HeroBar,

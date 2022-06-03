@@ -45,7 +45,7 @@ export default {
 </script>
 <style scoped>
 a#custom {
-  color: #00b274 !important;
+  color: #000fb2 !important;
 }
 a:hover#custom {
   color: #00b274 !important;
