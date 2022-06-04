@@ -25,7 +25,7 @@ import { getUserRoleFromSession } from "../src/utils/session";
 export default {
   name: "home",
   components: {
-    NavBar
+    NavBar,
   },
   data() {
     return {

@@ -7,107 +7,44 @@
     <section class="section is-main-section">
       <card-component title="시험" icon="ballot" @submit.prevent="submitForm">
         <b-field label="시험명" message="과목명을 적어주세요." horizontal>
-          <b-input
-            placeholder="시험명 : 소제목"
-            v-model="form.examName"
-            name="examName"
-            maxlength="150"
-            required
-          />
+          <b-input placeholder="시험명 : 소제목" v-model="form.examName" name="examName" maxlength="150" required />
         </b-field>
         <b-field label="시험 시간 지정" horizontal>
-          <b-field
-            :label-position="labelPosition"
-            message="시험 시작 시간 지정"
-          >
-            <b-datetimepicker
-              rounded
-              label="시험 시작 시간"
-              icon="calendar-today"
-              v-model="form.openTime"
-              :localISOdt="localISOdt"
-              :datepicker="{ showWeekNumber }"
-              :timepicker="{ enableSeconds, hourFormat }"
-              horizontal-time-picker
-            >
+          <b-field :label-position="labelPosition" message="시험 시작 시간 지정">
+            <b-datetimepicker rounded label="시험 시작 시간" icon="calendar-today" v-model="form.openTime"
+              :localISOdt="localISOdt" :datepicker="{ showWeekNumber }" :timepicker="{ enableSeconds, hourFormat }"
+              horizontal-time-picker>
             </b-datetimepicker>
           </b-field>
-          <b-field
-            :label-position="labelPosition"
-            name="endTime"
-            message="시험 종료 시간 지정"
-          >
-            <b-datetimepicker
-              rounded
-              icon="calendar-today"
-              v-model="form.closeTime"
-              :localISOdt="localISOdt"
-              :datepicker="{ showWeekNumber }"
-              :timepicker="{ enableSeconds, hourFormat }"
-              horizontal-time-picker
-            >
+          <b-field :label-position="labelPosition" name="closeTime" message="시험 종료 시간 지정">
+            <b-datetimepicker rounded icon="calendar-today" v-model="form.closeTime" :localISOdt="localISOdt"
+              :datepicker="{ showWeekNumber }" :timepicker="{ enableSeconds, hourFormat }" horizontal-time-picker>
             </b-datetimepicker>
           </b-field>
         </b-field>
-        <b-field
-          label="시험 유의사항"
-          message="당신의 시험 유의사항을 255자 이내로 작성하세요."
-          horizontal
-        >
-          <b-input
-            type="textarea"
-            placeholder="해당 시험 유의사항 만들기"
-            v-model="form.testGuide"
-            maxlength="255"
-            required
-          />
+        <b-field label="시험 유의사항" message="당신의 시험 유의사항을 255자 이내로 작성하세요." horizontal>
+          <b-input type="textarea" placeholder="해당 시험 유의사항 만들기" v-model="form.examDescribe" maxlength="255" required />
         </b-field>
-        <b-button class="is-primary" @click="updateTestForm()"
-          >시험 수정</b-button
-        >
+        <b-button class="is-primary" @click="updateTestForm()">시험 수정</b-button>
       </card-component>
       <br />
       <br />
-      <card-component
-        class="has-table has-mobile-sort-spaced"
-        title="문제/보기 확인"
-        icon="account-multiple"
-      >
+      <card-component class="has-table has-mobile-sort-spaced" title="문제/보기 확인" icon="account-multiple">
         <section class="pl-3 pr-3">
           <b-table :data="problems">
-            <b-table-column
-              label="문제 번호"
-              field="문제 번호"
-              sortable
-              v-slot="props"
-            >
+            <b-table-column label="문제 번호" field="문제 번호" sortable v-slot="props">
               {{ props.row.quizNum }}
             </b-table-column>
             <b-table-column label="문제" field="문제" sortable v-slot="props">
               {{ props.row.quizDescribe }}
             </b-table-column>
-            <b-table-column
-              label="보기 1번"
-              field="보기 1번"
-              sortable
-              v-slot="props"
-            >
+            <b-table-column label="보기 1번" field="보기 1번" sortable v-slot="props">
               {{ props.row.quizSelection[0] }}
             </b-table-column>
-            <b-table-column
-              label="보기 2번"
-              field="보기 2번"
-              sortable
-              v-slot="props"
-            >
+            <b-table-column label="보기 2번" field="보기 2번" sortable v-slot="props">
               {{ props.row.quizSelection[1] }}
             </b-table-column>
-            <b-table-column
-              label="보기 3번"
-              field="보기 3번"
-              sortable
-              v-slot="props"
-            >
+            <b-table-column label="보기 3번" field="보기 3번" sortable v-slot="props">
               {{ props.row.quizSelection[2] }}
             </b-table-column>
             <b-table-column label="보기 4번" field="보기 4번" v-slot="props">
@@ -117,22 +54,10 @@
               {{ props.row.quizAnswer }}
             </b-table-column>
             <b-table-column label="수정 및 삭제" v-slot="props" centered>
-              <b-button
-                type="is-success"
-                outlined
-                v-on:click="updateTestProblems(props.row.quizId)"
-                position="is-centered"
-                size="is-small"
-                >수정</b-button
-              >
-              <b-button
-                type="is-danger"
-                outlined
-                v-on:click="deleteTestProblems(props.row.quizId)"
-                position="is-centered"
-                size="is-small"
-                >삭제</b-button
-              >
+              <b-button type="is-success" outlined v-on:click="updateTestProblems(props.row.quizId)"
+                position="is-centered" size="is-small">수정</b-button>
+              <b-button type="is-danger" outlined v-on:click="deleteTestProblems(props.row.quizId)"
+                position="is-centered" size="is-small">삭제</b-button>
             </b-table-column>
           </b-table>
         </section>
@@ -141,79 +66,33 @@
       <br />
       <card-component>
         <b-field label="문항 번호" horizontal>
-          <b-numberinput
-            step="1"
-            v-model="form.quizNum"
-            style="width: 200px;"
-          ></b-numberinput>
+          <b-numberinput step="1" v-model="form.quizNum" style="width: 200px;"></b-numberinput>
         </b-field>
-        <b-field
-          label="문제"
-          message="당신의 문제를 255자 이내로 작성하세요."
-          horizontal
-        >
-          <b-input
-            type="textarea"
-            placeholder="시험 문제 만들기"
-            v-model="form.quizDescribe"
-            maxlength="255"
-          />
+        <b-field label="문제" message="당신의 문제를 255자 이내로 작성하세요." horizontal>
+          <b-input type="textarea" placeholder="시험 문제 만들기" v-model="form.quizDescribe" maxlength="255" />
         </b-field>
-        <b-field
-          label="보기"
-          message="당신이 내고 싶은 문항을 작성하세요."
-          horizontal
-        >
+        <b-field label="보기" message="당신이 내고 싶은 문항을 작성하세요." horizontal>
           <b-field label="1번" :label-position="labelPosition">
-            <b-input
-              placeholder="1번 보기를 입력하세요."
-              name="form.quizSelection[]"
-              v-on:input="changed"
-              v-model="form.quizSelection[0]"
-              maxlength="150"
-            ></b-input>
+            <b-input placeholder="1번 보기를 입력하세요." name="form.quizSelection[]" v-on:input="changed"
+              v-model="form.quizSelection[0]" maxlength="150"></b-input>
           </b-field>
           <b-field label="2번" :label-position="labelPosition">
-            <b-input
-              placeholder="2번 보기를 입력하세요."
-              v-on:input="changed"
-              name="form.quizSelection[]"
-              v-model="form.quizSelection[1]"
-              maxlength="150"
-            >
+            <b-input placeholder="2번 보기를 입력하세요." v-on:input="changed" name="form.quizSelection[]"
+              v-model="form.quizSelection[1]" maxlength="150">
             </b-input>
           </b-field>
           <b-field label="3번" :label-position="labelPosition">
-            <b-input
-              placeholder="3번 보기를 입력하세요."
-              v-on:input="changed"
-              name="form.quizSelection[]"
-              v-model="form.proSel[2]"
-              maxlength="150"
-            ></b-input>
+            <b-input placeholder="3번 보기를 입력하세요." v-on:input="changed" name="form.quizSelection[]"
+              v-model="form.quizSelection[2]" maxlength="150"></b-input>
           </b-field>
           <b-field label="4번" :label-position="labelPosition">
-            <b-input
-              placeholder="4번 보기를 입력하세요."
-              v-on:input="changed"
-              name="form.quizSelection[]"
-              v-model="form.proSel[3]"
-              maxlength="150"
-            ></b-input>
+            <b-input placeholder="4번 보기를 입력하세요." v-on:input="changed" name="form.quizSelection[]"
+              v-model="form.quizSelection[3]" maxlength="150"></b-input>
           </b-field>
         </b-field>
-        <b-field
-          label="정답"
-          name="quizAnswer"
-          message="당신이 낸 문항의 정답을 작성하세요."
-          horizontal
-        >
+        <b-field label="정답" name="quizAnswer" message="당신이 낸 문항의 정답을 작성하세요." horizontal>
           <b-field label="정답" :label-position="labelPosition">
-            <b-input
-              v-model="form.quizAnswer"
-              placeholder="정답을 입력하세요."
-              maxlength="150"
-            ></b-input>
+            <b-input v-model="form.quizAnswer" placeholder="정답을 입력하세요." maxlength="150"></b-input>
           </b-field>
         </b-field>
         <div style="text-align: center;">
@@ -225,12 +104,7 @@
         </div>
       </card-component>
       <div class="has-text-centered">
-        <b-button
-          size="is-large"
-          tag="router-link"
-          to="/instructor"
-          type="is-link"
-        >
+        <b-button size="is-large" tag="router-link" to="/instructor" type="is-link">
           시험 수정 완료
         </b-button>
       </div>

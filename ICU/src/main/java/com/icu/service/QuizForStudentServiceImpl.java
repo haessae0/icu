@@ -29,7 +29,8 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
     private final StudentRepository studentRepository;
     private final QuizForStudentRepository quizForStudentRepository;
 
-    public QuizForStudentServiceImpl(ExamRepository examRepository, StudentRepository studentRepository, QuizForStudentRepository quizForStudentRepository) {
+    public QuizForStudentServiceImpl(ExamRepository examRepository, StudentRepository studentRepository,
+                                     QuizForStudentRepository quizForStudentRepository) {
         this.examRepository = examRepository;
         this.studentRepository = studentRepository;
         this.quizForStudentRepository = quizForStudentRepository;
@@ -37,10 +38,14 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
 
     @Transactional
     public Boolean insertQuizForStudent(String username, long examNumber) {
-        Optional<Student> studentOptional = studentRepository.findById(username);
-        Optional<Exam> examOptional = examRepository.findById(examNumber);
+        Optional<Student> studentOptional;
+        Optional<Exam> examOptional;
 
         try {
+
+            studentOptional = studentRepository.findById(username);
+            examOptional = examRepository.findById(examNumber);
+
             if (studentOptional.isPresent() && examOptional.isPresent()) {
                 QuizForStudent quizForStudent = new QuizForStudent();
                 Student student = studentOptional.get();
@@ -69,7 +74,8 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
     }
 
     public QuizForStudentDto getQuizForStudent(String username, long examNumber) {
-        Optional<QuizForStudent> quizForStudentOptional = quizForStudentRepository.findQuizForStudentByUserNameAndExamNumber(username, examNumber);
+        Optional<QuizForStudent> quizForStudentOptional = quizForStudentRepository
+                .findQuizForStudentByUserNameAndExamNumber(username, examNumber);
 
         try {
             if (quizForStudentOptional.isPresent()) {
@@ -78,7 +84,12 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
                 List<String> cheatingTime = Arrays.asList(quizForStudent.getCheatingTime().split("/"));
                 List<String> studentAnswer = Arrays.asList(quizForStudent.getStudentAnswer().split("/"));
 
-                QuizForStudentDto quizForStudentDto = QuizForStudentDto.builder().fullname(studentRepository.findById(username).get().getFullname()).username(username).examName(examRepository.findById(examNumber).get().getExamName()).examNumber(examNumber).lier(quizForStudent.getLier()).cheatingTime(cheatingTime).videoName(quizForStudent.getVideoName()).studentAnswer(studentAnswer).status(quizForStudent.getStatus()).quizResult(quizForStudent.getQuizResult()).build();
+                QuizForStudentDto quizForStudentDto = QuizForStudentDto.builder()
+                        .fullname(studentRepository.findById(username).get().getFullname()).username(username)
+                        .examName(examRepository.findById(examNumber).get().getExamName()).examNumber(examNumber)
+                        .lier(quizForStudent.getLier()).cheatingTime(cheatingTime)
+                        .videoName(quizForStudent.getVideoName()).studentAnswer(studentAnswer)
+                        .status(quizForStudent.getStatus()).quizResult(quizForStudent.getQuizResult()).build();
 
                 logger.info("정보 조회 성공", username, examNumber);
                 return quizForStudentDto;
@@ -94,13 +105,24 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
     }
 
     public List<QuizForStudentDto> getQuizForStudentListByUsername(String username) {
-        Optional<List<QuizForStudent>> quizForStudentList = quizForStudentRepository.findAllQuizForStudentByUserName(username);
+        Optional<List<QuizForStudent>> quizForStudentList = quizForStudentRepository
+                .findAllQuizForStudentByUserName(username);
 
-        Stream<QuizForStudent> before = quizForStudentList.get().stream().filter(student -> student.getStudentAnswer() == null);
-        Stream<QuizForStudent> after = quizForStudentList.get().stream().filter(student -> student.getStudentAnswer() != null);
+        Stream<QuizForStudent> before = quizForStudentList.get().stream()
+                .filter(student -> student.getStudentAnswer() == null);
+        Stream<QuizForStudent> after = quizForStudentList.get().stream()
+                .filter(student -> student.getStudentAnswer() != null);
 
-        List<QuizForStudentDto> dtoBefore = before.map(student -> new QuizForStudentDto(username, null, examRepository.findById(student.getExamNumber().getExamNumber()).get().getExamName(), null, null, null, null, null, student.getStatus(), student.getExamNumber().getExamNumber())).collect(Collectors.toList());
-        List<QuizForStudentDto> dtoAfter = before.map(student -> new QuizForStudentDto(username, null, examRepository.findById(student.getExamNumber().getExamNumber()).get().getExamName(), student.getQuizResult(), student.getLier(), Arrays.asList(student.getCheatingTime().split("/")), student.getVideoName(), Arrays.asList(student.getStudentAnswer().split("/")), student.getStatus(), student.getExamNumber().getExamNumber())).collect(Collectors.toList());
+        List<QuizForStudentDto> dtoBefore = before
+                .map(student -> new QuizForStudentDto(username, null,
+                        examRepository.findById(student.getExamNumber().getExamNumber()).get().getExamName(), null,
+                        null, null, null, null, student.getStatus(), student.getExamNumber().getExamNumber()))
+                .collect(Collectors.toList());
+        List<QuizForStudentDto> dtoAfter = after.map(student -> new QuizForStudentDto(username, null,
+                examRepository.findById(student.getExamNumber().getExamNumber()).get().getExamName(),
+                student.getQuizResult(), student.getLier(), Arrays.asList(student.getCheatingTime().split("/")),
+                student.getVideoName(), Arrays.asList(student.getStudentAnswer().split("/")), student.getStatus(),
+                student.getExamNumber().getExamNumber())).collect(Collectors.toList());
 
         List<QuizForStudentDto> joinList = new ArrayList<QuizForStudentDto>();
         joinList.addAll(dtoBefore);
@@ -111,16 +133,24 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
     }
 
     public List<QuizForStudentDto> getQuizForStudentListByExamNumber(long examNumber) {
-        Optional<List<QuizForStudent>> quizForStudentList = quizForStudentRepository.findAllQuizForStudentByExamNumber(examNumber);
+        Optional<List<QuizForStudent>> quizForStudentList = quizForStudentRepository
+                .findAllQuizForStudentByExamNumber(examNumber);
 
-        List<QuizForStudentDto> dtoList = quizForStudentList.get().stream().map(student -> new QuizForStudentDto(student.getStudentId().getUsername(), studentRepository.findById(student.getStudentId().getUsername()).get().getFullname(), null, student.getQuizResult(), student.getLier(), null, null, null, student.getStatus(), student.getExamNumber().getExamNumber())).collect(Collectors.toList());
+        List<QuizForStudentDto> dtoList = quizForStudentList.get().stream()
+                .map(student -> new QuizForStudentDto(student.getStudentId().getUsername(),
+                        studentRepository.findById(student.getStudentId().getUsername()).get().getFullname(), null,
+                        student.getQuizResult(), student.getLier(), null, null, null, student.getStatus(),
+                        student.getExamNumber().getExamNumber()))
+                .collect(Collectors.toList());
         logger.info("정보 조회", examNumber);
         return dtoList;
     }
 
     @Transactional
     public Boolean updateQuizForStudent(QuizForStudentDto quizForStudentDto, MultipartFile multipartFile) {
-        Optional<QuizForStudent> quizForStudentOptional = quizForStudentRepository.findQuizForStudentByUserNameAndExamNumber(quizForStudentDto.getUsername(), quizForStudentDto.getExamNumber());
+        Optional<QuizForStudent> quizForStudentOptional = quizForStudentRepository
+                .findQuizForStudentByUserNameAndExamNumber(quizForStudentDto.getUsername(),
+                        quizForStudentDto.getExamNumber());
 
         if (quizForStudentOptional.isPresent()) {
             QuizForStudent quizForStudent = quizForStudentOptional.get();
@@ -128,7 +158,8 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
 
             try {
                 videoname = "video.mp4";
-                multipartFile.transferTo(new File(System.getProperty("user.dir") + "/Users/haessae0/Desktop/icu/ICU/src/main/webapp/userVideo" + videoname));
+                multipartFile.transferTo(new File(System.getProperty("user.dir")
+                        + "/Users/haessae0/Desktop/icu/ICU/src/main/webapp/userVideo" + videoname));
                 logger.info("{}번 문제 녹화파일 등록 성공", quizForStudentDto.getExamNumber());
                 quizForStudent.setVideoName(videoname);
             } catch (IllegalStateException | IOException exception) {
@@ -160,7 +191,8 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
 
     @Transactional
     public Boolean updateQuizScore(String username, long examNumber, String quizResult) {
-        Optional<QuizForStudent> quizForStudentOptional = quizForStudentRepository.findQuizForStudentByUserNameAndExamNumber(username, examNumber);
+        Optional<QuizForStudent> quizForStudentOptional = quizForStudentRepository
+                .findQuizForStudentByUserNameAndExamNumber(username, examNumber);
 
         if (quizForStudentOptional.isPresent()) {
             try {
@@ -187,7 +219,8 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
 
     @Transactional
     public Boolean deleteQuizForStudentByUsername(String username, long examNumber) {
-        Optional<QuizForStudent> quizForStudentOptional = quizForStudentRepository.findQuizForStudentByUserNameAndExamNumber(username, examNumber);
+        Optional<QuizForStudent> quizForStudentOptional = quizForStudentRepository
+                .findQuizForStudentByUserNameAndExamNumber(username, examNumber);
 
         try {
             if (quizForStudentOptional.isPresent()) {
@@ -204,6 +237,5 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
             return false;
         }
     }
-
 
 }

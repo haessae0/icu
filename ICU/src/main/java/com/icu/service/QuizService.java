@@ -1,6 +1,5 @@
 package com.icu.service;
 
-import com.icu.domain.quiz.Quiz;
 import com.icu.web.dto.QuizDto;
 
 import java.util.List;

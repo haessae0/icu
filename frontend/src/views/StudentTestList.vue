@@ -20,33 +20,33 @@
               :hoverable="isHoverable"
             >
               <b-table-column
-                field="testNum"
+                field="examNumber"
                 label="시험번호"
                 numeric
                 centered
                 v-slot="props"
               >
-                {{ props.row.testNum }}
+                {{ props.row.examNumber }}
               </b-table-column>
               <b-table-column
-                field="testName"
+                field="examName"
                 label="시험명"
                 v-slot="props"
                 centered
               >
-                {{ props.row.testName }}
+                {{ props.row.examName }}
               </b-table-column>
               <b-table-column
-                field="testStatus"
+                field="status"
                 label="시험응시여부"
                 v-slot="props"
                 centered
               >
                 <b-field>
                   <span
-                    v-if="props.row.testStatus == 'T'"
+                    v-if="props.row.status == 'True'"
                     class="tag is-danger"
-                    v-on:click="takeQuizForStudent(props.row.testNum)"
+                    v-on:click="takeQuizForStudent(props.row.examNumber)"
                   >
                     시험 응시 하기
                   </span>
@@ -56,20 +56,20 @@
                 </b-field>
               </b-table-column>
               <b-table-column
-                field="testResult"
+                field="quizResult"
                 label="채점결과"
                 v-slot="props"
                 centered
               >
                 <b-field>
-                  <span v-if="props.row.testResult == null" class="tag is-warn">
+                  <span v-if="props.row.quizResult == null" class="tag is-warn">
                     채점중
                   </span>
                   <span
-                    v-else-if="(props.row.testStatus = !null)"
+                    v-else-if="(props.row.status = !null)"
                     class="tag is-success"
                   >
-                    {{ props.row.testResult }}
+                    {{ props.row.quizResult }}
                   </span>
                 </b-field>
               </b-table-column>
@@ -120,18 +120,17 @@ export default {
           }
         })
         .then(response => {
-          this.studenttest = response.data;
+          this.quizlist = response.data;
           console.log("확인");
-          console.log(this.studenttest);
+          console.log(this.quizlist);
         })
         .catch(e => {
           console.log(e);
         });
     },
     takeQuizForStudent(examNumber) {
-      //  수정버튼 클릭시 ModifyTest로 이동
       return this.$router.push({
-        name: "examDescribe",
+        name: "TestGuide",
         params: { examNumber: examNumber }
       });
     }
