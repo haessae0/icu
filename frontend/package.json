@@ -19,6 +19,8 @@
     "dayjs": "^1.10.4",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",
+    "md5": "^2.3.0",
+    "mdb-vue-ui-kit": "^1.14.0",
     "numeral": "^2.0.6",
     "register-service-worker": "^1.7.2",
     "vue": "^2.6.12",

@@ -7,7 +7,7 @@
             로그인
           </h1>
           <h2 class="subtitle centered">
-            오늘도 환영합니다.
+            즐거운 하루되세요.
           </h2>
         </div>
       </div>
@@ -17,15 +17,15 @@
         <div class="columns is-mobile">
           <div class="column is-half is-offset-one-quarter">
             <form @submit.prevent="submitForm()" class="form">
-              <b-field label="ID" type="" message="" align="left">
+              <b-field label="이메일" type="" message="" align="left">
                 <b-input
                   v-model="username"
-                  placeholder="아이디"
+                  placeholder="이메일"
                   maxlength="30"
                   size="is-medium"
                 ></b-input>
               </b-field>
-              <b-field label="Password" type="" message="" align="left">
+              <b-field label="비밀번호" type="" message="" align="left">
                 <b-input
                   v-model="password"
                   type="password"
@@ -68,7 +68,7 @@ export default {
   },
   computed: {
     isIdValid() {
-      return validateEmail(this.username); //id가 이메일 형식이 맞는지 체크
+      return validateEmail(this.username);
     }
   },
   methods: {
@@ -89,11 +89,12 @@ export default {
             "Authorization",
             response.headers.authorization
           );
-          // this.$router.push({ name: "Home" });
+          this.success();
           location.reload();
           location.href = "http://localhost:8080/";
         })
         .catch(error => {
+          this.danger();
           console.log(error);
         })
         .finally(() => {
@@ -103,6 +104,20 @@ export default {
     initForm() {
       this.username = "";
       this.password = "";
+    },
+    success() {
+      this.$buefy.notification.open({
+        message: "로그인에 성공하셨습니다.",
+        type: "is-success",
+        position: "is-bottom-right"
+      });
+    },
+    danger() {
+      this.$buefy.notification.open({
+        message: `회원 가입을 다시 시도해 주세요.`,
+        type: "is-danger",
+        position: "is-bottom-right"
+      });
     }
   }
 };

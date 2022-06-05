@@ -1,9 +1,6 @@
 <template>
   <div>
     <title-bar :title-stack="titleStack" />
-    <hero-bar>
-      시험 안내사항
-    </hero-bar>
     <section>
       <TestGuideForm></TestGuideForm>
     </section>
@@ -13,20 +10,19 @@
 <script>
 import TestGuideForm from "@/components/TestGuideForm.vue";
 import TitleBar from "@/components/TitleBar";
-import HeroBar from "@/components/HeroBar";
 
 export default {
   components: {
     TestGuideForm,
-    TitleBar,
-    HeroBar
+    TitleBar
   },
   computed: {
     titleStack() {
-      return ["학생", "안내사항"];
+      return ["시험 안내사항"];
     }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

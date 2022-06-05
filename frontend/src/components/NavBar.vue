@@ -1,8 +1,7 @@
 <template>
   <nav v-show="isNavBarVisible" id="navbar-main" class="navbar is-fixed-top">
-    ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ ㅤ
     <a id="custom" href="/">
-      <img src="../assets/logo2.jpg" width="150" height="100" />
+      <img src="../assets/logo2.jpg" width="50" height="50" />
     </a>
     <div class="navbar-brand">
       <a class="navbar-item is-hidden-desktop" @click.prevent="menuToggleMobile">
@@ -34,8 +33,7 @@
             <router-link id="custom" to="/signup">회원가입</router-link>
           </template>
         </a>
-        <sidebar/>
-        <a></a>
+        <Menu />
       </div>
     </div>
   </nav>
@@ -43,13 +41,13 @@
 
 <script>
 import { mapState } from "vuex";
-import Sidebar from "@/components/Sidebar";
+import Menu from "@/components/Menu";
 
 import axios from "axios";
 export default {
   name: "NavBar",
   components: {
-    Sidebar
+    Menu
   },
   data() {
     return {
@@ -58,15 +56,6 @@ export default {
     };
   },
   computed: {
-    menuNavBarToggleIcon() {
-      return this.isMenuNavBarActive ? "close" : "dots-vertical";
-    },
-    menuToggleMobileIcon() {
-      return this.isAsideMobileExpanded ? "backburger" : "forwardburger";
-    },
-    darkModeToggleIcon() {
-      return this.isDarkModeActive ? "white-balance-sunny" : "weather-night";
-    },
     ...mapState([
       "isNavBarVisible",
       "isAsideMobileExpanded",
@@ -79,9 +68,6 @@ export default {
     });
   },
   methods: {
-    menuToggleMobile() {
-      this.$store.commit("asideMobileStateToggle");
-    },
     menuNavBarToggle() {
       this.isMenuNavBarActive = !this.isMenuNavBarActive;
     },
@@ -123,6 +109,6 @@ export default {
 </script>
 <style scoped>
 a#custom {
-  color: #ffb300 !important;
+  color: #bb00ff !important;
 }
 </style>

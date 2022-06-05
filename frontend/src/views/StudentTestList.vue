@@ -1,53 +1,21 @@
 <template>
   <div>
     <title-bar :title-stack="titleStack" />
-    <hero-bar>
-      내 시험
-      <router-link slot="right" to="/profile" class="button">
-        마이 페이지
-      </router-link>
-    </hero-bar>
     <section class="section is-main-section">
-      <card-component
-        class="has-table has-mobile-sort-spaced"
-        title="시험"
-        icon="account-multiple"
-      >
+      <card-component class="has-table has-mobile-sort-spaced" title="시험" icon="account-multiple">
         <div id="app" class="container">
           <section>
-            <b-table
-              :data="isEmpty ? [] : quizlist"
-              :hoverable="isHoverable"
-            >
-              <b-table-column
-                field="examNumber"
-                label="시험번호"
-                numeric
-                centered
-                v-slot="props"
-              >
+            <b-table :data="isEmpty ? [] : quizlist" :hoverable="isHoverable">
+              <b-table-column field="examNumber" label="시험번호" numeric centered v-slot="props">
                 {{ props.row.examNumber }}
               </b-table-column>
-              <b-table-column
-                field="examName"
-                label="시험명"
-                v-slot="props"
-                centered
-              >
+              <b-table-column field="examName" label="시험명" v-slot="props" centered>
                 {{ props.row.examName }}
               </b-table-column>
-              <b-table-column
-                field="status"
-                label="시험응시여부"
-                v-slot="props"
-                centered
-              >
+              <b-table-column field="status" label="시험응시여부" v-slot="props" centered>
                 <b-field>
-                  <span
-                    v-if="props.row.status == 'True'"
-                    class="tag is-danger"
-                    v-on:click="takeQuizForStudent(props.row.examNumber)"
-                  >
+                  <span v-if="props.row.status == 'True'" class="tag is-danger"
+                    v-on:click="takeQuizForStudent(props.row.examNumber)">
                     시험 응시 하기
                   </span>
                   <span v-else class="tag is-success">
@@ -55,20 +23,12 @@
                   </span>
                 </b-field>
               </b-table-column>
-              <b-table-column
-                field="quizResult"
-                label="채점결과"
-                v-slot="props"
-                centered
-              >
+              <b-table-column field="quizResult" label="채점결과" v-slot="props" centered>
                 <b-field>
                   <span v-if="props.row.quizResult == null" class="tag is-warn">
                     채점중
                   </span>
-                  <span
-                    v-else-if="(props.row.status = !null)"
-                    class="tag is-success"
-                  >
+                  <span v-else-if="(props.row.status = !null)" class="tag is-success">
                     {{ props.row.quizResult }}
                   </span>
                 </b-field>
@@ -87,17 +47,15 @@
 import { mapState } from "vuex";
 import CardComponent from "@/components/CardComponent";
 import TitleBar from "@/components/TitleBar";
-import HeroBar from "@/components/HeroBar";
 import axios from "axios";
 
 export default {
   name: "StudentTestList",
   components: {
-    HeroBar,
     TitleBar,
     CardComponent
   },
-  data: function() {
+  data: function () {
     return {
       userName: this.$store.state.userName,
       userRole: this.$store.state.userRole,
@@ -107,7 +65,7 @@ export default {
   },
   computed: {
     titleStack() {
-      return ["시험보기", "내 시험 목록"];
+      return ["시험 목록"];
     },
     ...mapState(["userName", "userRole"])
   },

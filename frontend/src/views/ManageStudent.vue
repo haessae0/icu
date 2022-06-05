@@ -1,9 +1,6 @@
 <template>
   <div>
     <title-bar :title-stack="titleStack" />
-    <hero-bar>
-      응시자 관리
-    </hero-bar>
     <section class="section is-main-section">
       <card-component
         class="has-table has-mobile-sort-spaced"
@@ -27,7 +24,7 @@
                 v-slot="props"
                 centered
               >
-                {{ props.row.userRealName }}
+                {{ props.row.fullname }}
               </b-table-column>
               <b-table-column
                 field="quizResult"
@@ -110,19 +107,16 @@
 </template>
 
 <script>
-import Notification from "@/components/Notification";
+
 import CardComponent from "@/components/CardComponent";
 import TitleBar from "@/components/TitleBar";
-import HeroBar from "@/components/HeroBar";
 import axios from "axios";
 
 export default {
   name: "ManageStudent",
   components: {
-    HeroBar,
     TitleBar,
-    CardComponent,
-    Notification
+    CardComponent
   },
   data() {
     return {
@@ -134,7 +128,7 @@ export default {
   },
   computed: {
     titleStack() {
-      return ["강사", "응시자 관리"];
+      return ["학생 관리"];
     }
   },
   methods: {

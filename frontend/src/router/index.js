@@ -105,7 +105,7 @@ const routes = [
   },
   {
     meta: {
-      title: "Sign Up"
+      title: "회원가입"
     },
     path: "/signup",
     name: "Sign Up",

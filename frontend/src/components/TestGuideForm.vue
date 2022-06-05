@@ -2,51 +2,25 @@
   <div id="app" class="container is-max-desktop pt-5">
     <section>
       <div class="container is-max-desktop">
-        <b-message
-          title="시험 주의사항"
-          type="is-success"
-          has-icon
-          aria-close-label="Close message"
-        >
+        <b-message title="시험 주의사항" type="is-info" has-icon aria-close-label="Close message">
           {{ this.test.examDescribe }}
         </b-message>
-        <b-notification
-          type="is-success is-light"
-          aria-close-label="Close notification"
-        >
+        <b-notification type="is-info is-light" aria-close-label="Close notification">
           <b>
-            시험 시작 전, 시험 외 다른 창이 열려 있을 경우 모두 로그아웃 후 닫아
-            주시기 바랍니다. PC 사용 및 Chrome 브라우져 응시를 권장드립니다.</b
-          >
-        </b-notification>
-        <b-notification
-          type="is-success is-light"
-          aria-close-label="Close notification"
-        >
-          <b>
-            시험응시 중에는 브라우저 내 메뉴를 누르거나 다른 창으로 이동할 경우
-            오류가 발생할 수 있으니 유의하여 주시기 바랍니다.</b
-          >
-        </b-notification>
-        <b-notification
-          type="is-success is-light"
-          aria-close-label="Close notification"
-        >
-          <b>
-            교수/강사님의 공지사항을 참고하시어, 시험시간이 되면 시험시작 버튼을
-            클릭합니다.시험 응시시작은 ‘바로 퀴즈에 응시’ 버튼을 누르는 시점부터
-            시작합니다.</b
-          >
+            시험을 치르기에 앞서 교수님이 설정한 공지 사항을 숙지하시기 바랍니다.<br /><br />
+
+            컴퓨터나 랩톱에 있는 카메라가 브라우저에 잘 설정되어 있나 확인 바랍니다.<br />
+            만약 되어있지 않다면 시험 응시 전에 설정하시기 바랍니다.<br /><br />
+
+            시험 응시 시간은 시험 페이지 우측 상단에 표시되어있으니 시간 분배를 통해 늦지 않게 제출해주시기를 바랍니다.<br /><br />
+          </b>
         </b-notification>
 
-        <b-notification
-          type="is-success is-light"
-          aria-close-label="Close notification"
-        >
-          <b
-            >오른쪽 상단에 시간이 얼마나 남았는지 확인하실 수 있습니다. 적절한
-            시간분배는 필수!</b
-          >
+        <b-notification type="is-danger" aria-close-label="Close notification">
+          <b>
+            시험을 응시한 후 카메라를 통해 모니터링을 위해 응시자의 모습을 녹화하고 있습니다.<br /><br />
+            영상은 시험을 위해 사용된 후 일정 기간이 지난 후 삭제됩니다.
+          </b>
         </b-notification>
         <center>
           <!-- 이 시험시작 버튼은 flask 화면 단으로 이동해야 함 -->
@@ -63,7 +37,7 @@ import axios from "axios";
 import { setCookie } from "../utils/cookies";
 
 export default {
-  data: function() {
+  data: function () {
     return {
       examNumber: this.$route.params.examNumber,
       userName: this.$store.state.userName,
