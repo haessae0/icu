@@ -58,6 +58,10 @@ class VideoCamera(object):
                 break
             
             ##############################
+            gaze.refresh(frame)
+            frame = gaze.annotated_frame()
+            text = ""
+            
             if gaze.is_blinking():
                 text = " "
             elif gaze.is_right():
