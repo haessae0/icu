@@ -118,7 +118,7 @@
       if (distance < 0) {
         clearInterval(x);
         document.getElementById("timer").innerHTML = "EXPIRED";
-        location.href = `http://localhost:8081/completetest`
+        location.href = `http://localhost:8080/completetest`
       }
     }, 1000);
 
@@ -161,7 +161,7 @@
         .then((res) => {
           alert("답안,영상,부정행위 시간 보내기 성공")
           console.log(res);
-          location.href = `http://localhost:8081/completetest`
+          location.href = `http://localhost:8080/completetest`
         })
         .catch(error => {
           alert("답안,영상,부정행위 시간 보내기 실패");

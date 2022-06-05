@@ -1,64 +1,35 @@
-/* eslint-disable vue/no-parsing-error */ /* eslint-disable vue/no-parsing-error
-*/
 <template>
   <div>
     <title-bar :title-stack="titleStack" />
-    <hero-bar>
-      시험 감독
-    </hero-bar>
     <section class="pt-3 pl-3 pr-3 pb-3">
       <div class="tile is-ancestor">
-        <div class="tile is-4 is-vertical is-parent">
-          <div class="tile is-child box">
-            <p class="title is-5">시험감독</p>
-            <p>
-              응시자의 녹화 영상을 확인하세요.
+
+        <div class="tile is-child box">
+          <p class="title is-5" style="text-align:center">시험 응시자 : {{ userName }} 시험감독</p>
+          <hr />
+          <h6 class=" title is-6">의심 행위 감지 횟수 : {{ cheatingTime }}</h6>
+          <h6 class="title is-6">의심 행동 발견 : {{ lier }} </h6>
+          <h6 class="title is-6">시험 응시자 답안</h6>
+          <div class="pb-2" v-for="(value, index) in studentAnswer" :key="value.key">
+            {{ index + 1 }}번 : {{ value }} 번
+          </div>
+          <b-field label="시험 점수를 입력하세요. 부정행위시 0점">
+            <b-input v-model="quizResult" placeholder="0"></b-input>
+            <p class="control">
+              <b-button type="is-primary" outlined @click="updateStudentScore" label="시험 점수 입력" />
             </p>
-            <h6 class="title is-6">부정행위 감지 시간</h6>
-            <h6 class="subtitle is-6 pb-2">cheatingTime:{{ cheatingTime }}</h6>
-            <h6 class="title is-6">응시자 답변</h6>
-            <div
-              class="pb-2"
-              v-for="(value, index) in studentAnswer"
-              :key="value.key"
-            >
-              {{ index + 1 }}번: {{ value }}
-            </div>
-            <h6 class="title is-6">부정행위 유무</h6>
-            <h6 class="subtitle is-6 pb-2">lier: {{ lier }}</h6>
-            <h6 class="title is-6">응시자</h6>
-            <h6 class="subtitle is-6 pb-2">{{ userName }}</h6>
-            <!-- <br />
-            videoname: {{ videoName }} -->
-            <b-field label="시험 점수를 입력하세요. 부정행위시 0점">
-              <b-field>
-                <b-input v-model="quizResult" placeholder="0"></b-input>
-                <p class="control">
-                  <b-button
-                    type="is-primary"
-                    outlined
-                    @click="updateStudentScore"
-                    label="시험 점수 입력"
-                  />
-                </p>
-              </b-field>
-            </b-field>
-            <b-field grouped>
-              <div class="control">
-                <b-button tag="router-link" to="/instructor" type="is-link">
-                  시험 감독 완료
-                </b-button>
-              </div>
-            </b-field>
+          </b-field>
+          <div class="has-text-centered">
+            <b-button tag="router-link" to="/instructor" type="is-link">
+              시험 감독 완료
+            </b-button>
           </div>
         </div>
-
-        <!-- 아래부터 영상이 렌더링 되는 코드 옵션은 안 건들어도 됩니다.-->
-        <div class="tile is-parent">
-          <div class="tile is-child box">
-            <p class="title is-5">영상 확인</p>
-            <video width="720" height="640" controls :src="videoName"></video>
-          </div>
+      </div>
+      <div class="tile is-parent">
+        <div class="tile is-child box">
+          <p class="title is-5" style="text-align:center">영상 확인</p>
+          <video width="720" height="640" controls :src="videoName"></video>
         </div>
       </div>
     </section>
@@ -66,12 +37,10 @@
 </template>
 <script>
 import TitleBar from "@/components/TitleBar";
-import HeroBar from "@/components/HeroBar";
 import axios from "axios";
 export default {
   components: {
-    TitleBar,
-    HeroBar
+    TitleBar
   },
   data() {
     return {
@@ -88,7 +57,7 @@ export default {
   },
   computed: {
     titleStack() {
-      return ["강사", "응시자 시험 감독"];
+      return ["학생 시험 감독"];
     },
     player() {
       return this.$refs.videoPlayer.player;
@@ -100,9 +69,9 @@ export default {
       axios
         .get(
           "http://localhost:8000/quizforstudent/get/" +
-            this.userName +
-            "/" +
-            this.examNumber,
+          this.userName +
+          "/" +
+          this.examNumber,
           {
             headers: {
               Authorization: sessionStorage.getItem("Authorization")
@@ -120,7 +89,6 @@ export default {
           this.fullname = this.studentTest.fullname;
           this.videoName =
             "http://localhost:8000/uservideo/" + this.studentTest.videoName;
-          //이거 확인해보세요 비디오 이름 잘 가지고 오는지
           console.log(this.videoName);
         })
         .catch(e => {
@@ -135,11 +103,11 @@ export default {
       instance
         .put(
           "http://localhost:8000/quizforstudent/update-score/" +
-            this.userName +
-            "/" +
-            this.examNumber +
-            "/" +
-            this.quizResult
+          this.userName +
+          "/" +
+          this.examNumber +
+          "/" +
+          this.quizResult
         )
         .then(response => {
           this.success();

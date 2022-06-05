@@ -20,12 +20,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,7 +37,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider,
-            AuthenticationManagerBuilder authenticationManagerBuilder) {
+                           AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
@@ -184,7 +181,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<UserDto> getStudentList() {
-        List<User> userList = userRepository.findAllUserByRole("rSTUDENT");
+        List<User> userList = userRepository.findAllUserByRole("ROLE_STUDENT");
         List<UserDto> uDtoList = userList.stream().map(u -> new UserDto(u.getUsername(), null, u.getFullname(),
                 u.getPhoneNumber(), u.getRole())).collect(Collectors.toList());
 
@@ -193,7 +190,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<UserDto> getStudentListNotInTest(long examNumber) {
-        List<User> userList = userRepository.findAllUserNotInTest(examNumber, "rSTUDENT");
+        List<User> userList = userRepository.findAllUserNotInTest(examNumber, "ROLE_STUDENT");
         List<UserDto> uDtoList = userList.stream().map(u -> new UserDto(u.getUsername(), null, u.getFullname(),
                 u.getPhoneNumber(), u.getRole())).collect(Collectors.toList());
 

@@ -2,69 +2,26 @@
   <div>
     <title-bar :title-stack="titleStack" />
     <section class="section is-main-section">
-      <card-component title="시험" icon="ballot">
-        <b-field label="시험명" message="과목명을 적어주세요." horizontal>
-          <b-input
-            placeholder="시험명 : 소제목"
-            v-model="form.examName"
-            name="examName"
-            maxlength="150"
-            required
-          />
+      <card-component title="시험 만들기" icon="ballot">
+        <b-input placeholder="시험 과목명" v-model="form.examName" name="examName" maxlength="150" required />
+        <b-input type="textarea" placeholder="시험에 필요한 규칙 또는 설명을 작성해주시오." v-model="form.examDescribe" maxlength="255"
+          required />
+        <b-field :label-position="labelPosition" message="시험 시작 시간 지정">
+          <b-datetimepicker rounded label="시험 시작 시간" icon="calendar-today" v-model="form.openTime"
+            :localISOdt="localISOdt" :datepicker="{ showWeekNumber }" :timepicker="{ enableSeconds, hourFormat }"
+            horizontal-time-picker>
+          </b-datetimepicker>
         </b-field>
-        <b-field label="시험 시간 지정" horizontal>
-          <b-field
-            :label-position="labelPosition"
-            message="시험 시작 시간 지정"
-          >
-            <b-datetimepicker
-              rounded
-              label="시험 시작 시간"
-              icon="calendar-today"
-              v-model="form.openTime"
-              :localISOdt="localISOdt"
-              :datepicker="{ showWeekNumber }"
-              :timepicker="{ enableSeconds, hourFormat }"
-              horizontal-time-picker
-            >
-            </b-datetimepicker>
-          </b-field>
-          <b-field
-            :label-position="labelPosition"
-            name="closeTime"
-            message="시험 종료 시간 지정"
-          >
-            <b-datetimepicker
-              rounded
-              icon="calendar-today"
-              v-model="form.closeTime"
-              :localISOdt="localISOdt"
-              :datepicker="{ showWeekNumber }"
-              :timepicker="{ enableSeconds, hourFormat }"
-              horizontal-time-picker
-            >
-            </b-datetimepicker>
-          </b-field>
+        <b-field :label-position="labelPosition" name="closeTime" message="시험 종료 시간 지정">
+          <b-datetimepicker rounded icon="calendar-today" v-model="form.closeTime" :localISOdt="localISOdt"
+            :datepicker="{ showWeekNumber }" :timepicker="{ enableSeconds, hourFormat }" horizontal-time-picker>
+          </b-datetimepicker>
         </b-field>
-        <b-field
-          label="시험 유의사항"
-          message="당신의 시험 유의사항을 255자 이내로 작성하세요."
-          horizontal
-        >
-          <b-input
-            type="textarea"
-            placeholder="해당 시험 유의사항 만들기"
-            v-model="form.examDescribe"
-            maxlength="255"
-            required
-          />
-        </b-field>
+
         <div class="has-text-centered">
-          <b-button size="is-large is-primary" v-on:click="testForm()"
-            >시험 만들기</b-button
-          >
+          <b-button size="is-large is-primary" v-on:click="testForm()">시험 만들기</b-button>
         </div>
-        <hr />
+
       </card-component>
     </section>
   </div>
@@ -105,7 +62,7 @@ export default {
   },
   computed: {
     titleStack() {
-      return ["강사", "시험 생성"];
+      return ["시험 관리"];
     },
     ...mapState(["userName", "userRole"])
   },
