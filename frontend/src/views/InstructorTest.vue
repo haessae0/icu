@@ -14,46 +14,46 @@
           <section>
             <b-table :data="isEmpty ? [] : test" :hoverable="isHoverable">
               <b-table-column
-                field="testNum"
+                field="examNumber"
                 label="시험번호"
                 numeric
                 centered
                 v-slot="props"
               >
-                {{ props.row.testNum }}
+                {{ props.row.examNumber }}
               </b-table-column>
 
               <b-table-column
-                field="startTime"
+                field="openTime"
                 label="시작 시간"
                 v-slot="props"
                 centered
               >
-                {{ props.row.startTime }}
+                {{ props.row.openTime }}
               </b-table-column>
 
               <b-table-column
-                field="endTime"
+                field="closeTime"
                 label="종료 시간"
                 v-slot="props"
                 centered
               >
-                {{ props.row.endTime }}
+                {{ props.row.closeTime }}
               </b-table-column>
 
               <b-table-column
-                field="testGuide"
+                field="examDescribe"
                 label="시험 유의사항"
                 v-slot="props"
                 centered
               >
-                {{ props.row.testGuide }}
+                {{ props.row.examDescribe }}
               </b-table-column>
               <b-table-column label="수정 및 삭제" v-slot="props" centered>
                 <b-button
                   type="is-primary"
                   outlined
-                  v-on:click="updateInstructorTest(props.row.testNum)"
+                  v-on:click="updateInstructorTest(props.row.examNumber)"
                   position="is-centered"
                   size="is-small"
                   >수정</b-button
@@ -61,7 +61,7 @@
                 <b-button
                   type="is-danger"
                   outlined
-                  v-on:click="deleteInstructorTest(props.row.testNum)"
+                  v-on:click="deleteInstructorTest(props.row.examNumber)"
                   position="is-centered"
                   size="is-small"
                   >삭제</b-button
@@ -71,7 +71,7 @@
                 <b-button
                   type="is-primary"
                   outlined
-                  v-on:click="manageStudentList(props.row.testNum)"
+                  v-on:click="manageStudentList(props.row.examNumber)"
                   position="is-centered"
                   size="is-small"
                   >관리</b-button
@@ -126,7 +126,7 @@ export default {
   methods: {
     getInstructorTest() {
       axios
-        .get("http://localhost:8000/test/get?username=" + this.userName, {
+        .get("http://localhost:8000/exam/get?username=" + this.userName, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -139,27 +139,27 @@ export default {
           console.log(e);
         });
     },
-    updateInstructorTest(testNum) {
+    updateInstructorTest(examNumber) {
       //  수정버튼 클릭시 ModifyTest로 이동
       return this.$router.push({
         name: "ModifyTest",
-        params: { testNum: testNum }
+        params: { examNumber: examNumber }
       });
     },
-    manageStudentList(testNum) {
+    manageStudentList(examNumber) {
       //  수정버튼 클릭시 ModifyTest로 이동
       return this.$router.push({
         name: "ManageStudent",
-        params: { testNum: testNum }
+        params: { examNumber: examNumber }
       });
     },
-    deleteInstructorTest(testNum) {
+    deleteInstructorTest(examNumber) {
       axios
         .delete(
-          "http://localhost:8000/test/delete?username=" +
+          "http://localhost:8000/exam/delete?username=" +
             this.userName +
-            "&testnum=" +
-            testNum,
+            "&examNumber=" +
+            examNumber,
           {
             headers: {
               Authorization: sessionStorage.getItem("Authorization")

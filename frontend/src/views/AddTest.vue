@@ -6,8 +6,8 @@
         <b-field label="시험명" message="과목명을 적어주세요." horizontal>
           <b-input
             placeholder="시험명 : 소제목"
-            v-model="form.testName"
-            name="testName"
+            v-model="form.examName"
+            name="examName"
             maxlength="150"
             required
           />
@@ -21,7 +21,7 @@
               rounded
               label="시험 시작 시간"
               icon="calendar-today"
-              v-model="form.startTime"
+              v-model="form.openTime"
               :localISOdt="localISOdt"
               :datepicker="{ showWeekNumber }"
               :timepicker="{ enableSeconds, hourFormat }"
@@ -31,13 +31,13 @@
           </b-field>
           <b-field
             :label-position="labelPosition"
-            name="endTime"
+            name="closeTime"
             message="시험 종료 시간 지정"
           >
             <b-datetimepicker
               rounded
               icon="calendar-today"
-              v-model="form.endTime"
+              v-model="form.closeTime"
               :localISOdt="localISOdt"
               :datepicker="{ showWeekNumber }"
               :timepicker="{ enableSeconds, hourFormat }"
@@ -54,7 +54,7 @@
           <b-input
             type="textarea"
             placeholder="해당 시험 유의사항 만들기"
-            v-model="form.testGuide"
+            v-model="form.examDescribe"
             maxlength="255"
             required
           />
@@ -94,12 +94,12 @@ export default {
       selectedOptions: [],
       isLoading: false,
       form: {
-        testName: "",
-        endTime: "",
-        startTime: "",
-        testGuide: ""
+        examName: "",
+        closeTime: "",
+        openTime: "",
+        examDescribe: ""
       },
-      testNum: "",
+      examNumber: "",
       departments: ["JAVA", "SPRINGBOOT", "VUE", "SQL"]
     };
   },
@@ -112,14 +112,14 @@ export default {
   methods: {
     testForm() {
       const addTestData = {
-        testName: this.form.testName,
-        endTime: this.form.endTime,
-        startTime: this.form.startTime,
-        testGuide: this.form.testGuide
+        examName: this.form.examName,
+        closeTime: this.form.closeTime,
+        openTime: this.form.openTime,
+        examDescribe: this.form.examDescribe
       };
       axios
         .post(
-          "http://localhost:8000/test/create?username=" + this.userName,
+          "http://localhost:8000/exam/create?username=" + this.userName,
           addTestData,
           {
             headers: {
@@ -131,10 +131,10 @@ export default {
         .then(response => {
           this.success();
           console.log(response.data);
-          this.testNum = response.data;
+          this.examNumber = response.data;
           this.$router.push({
             name: "AddTestProblems",
-            params: { testNum: this.testNum }
+            params: { examNumber: this.examNumber }
           });
         })
         .catch(error => {
@@ -147,12 +147,11 @@ export default {
     },
     testproblemForm() {
       const addtestproblemData = {
-        proId: this.proId,
-        proNum: this.proNum,
-        proDes: this.proDes,
-        proSel: this.proSel,
-        proImage: this.proImage,
-        proAnswer: this.proAnswer
+        quizId: this.quizId,
+        quizNum: this.quizNum,
+        quizDescribe: this.quizDescribe,
+        quizSelection: this.quizSelection,
+        quizAnswer: this.quizAnswer
       };
       let instance = axios.create();
       instance.defaults.headers.common[
@@ -160,7 +159,7 @@ export default {
       ] = sessionStorage.getItem("Authorization");
       axios
         .post(
-          "http://localhost:8000/testpro/create/" + this.testService,
+          "http://localhost:8000/quiz/create/" + this.testService,
           addtestproblemData
         )
         .then(Headers => {
@@ -192,12 +191,11 @@ export default {
     }
   },
   initForm() {
-    this.proId = "";
-    this.pronum = "";
-    this.proDes = "";
-    this.proSel = "";
-    this.proImage = "";
-    this.proAnswer = "";
+    this.quizId = "";
+    this.quizNum = "";
+    this.quizDescribe = "";
+    this.quizSelection = "";
+    this.quizAnswer = "";
   }
 };
 </script>

@@ -8,7 +8,7 @@
       <card-component title="시험 문제" icon="ballot">
         <hr />
         <b-field label="문항 번호" horizontal>
-          <b-numberinput step="1" v-model="form.proNum"></b-numberinput>
+          <b-numberinput step="1" v-model="form.quizNum"></b-numberinput>
         </b-field>
         <b-field
           label="문제"
@@ -18,7 +18,7 @@
           <b-input
             type="textarea"
             placeholder="시험 문제 만들기"
-            v-model="form.proDes"
+            v-model="form.quizDescribe"
             maxlength="255"
           />
         </b-field>
@@ -30,9 +30,9 @@
           <b-field label="1번" :label-position="labelPosition">
             <b-input
               placeholder="1번 보기를 입력하세요."
-              name="form.proSel[]"
+              name="form.quizSelection[]"
               v-on:input="changed"
-              v-model="form.proSel[0]"
+              v-model="form.quizSelection[0]"
               maxlength="150"
             ></b-input>
           </b-field>
@@ -40,8 +40,8 @@
             <b-input
               placeholder="2번 보기를 입력하세요."
               v-on:input="changed"
-              name="form.proSel[]"
-              v-model="form.proSel[1]"
+              name="form.quizSelection[]"
+              v-model="form.quizSelection[1]"
               maxlength="150"
             >
             </b-input>
@@ -50,8 +50,8 @@
             <b-input
               placeholder="3번 보기를 입력하세요."
               v-on:input="changed"
-              name="form.proSel[]"
-              v-model="form.proSel[2]"
+              name="form.quizSelection[]"
+              v-model="form.quizSelection[2]"
               maxlength="150"
             ></b-input>
           </b-field>
@@ -59,21 +59,21 @@
             <b-input
               placeholder="4번 보기를 입력하세요."
               v-on:input="changed"
-              name="form.proSel[]"
-              v-model="form.proSel[3]"
+              name="form.quizSelection[]"
+              v-model="form.quizSelection[3]"
               maxlength="150"
             ></b-input>
           </b-field>
         </b-field>
         <b-field
           label="정답"
-          name="proAnswer"
+          name="quizAnswer"
           message="당신이 낸 문항의 정답을 작성하세요."
           horizontal
         >
           <b-field label="정답" :label-position="labelPosition">
             <b-input
-              v-model="form.proAnswer"
+              v-model="form.quizAnswer"
               placeholder="정답을 입력하세요."
               maxlength="150"
             ></b-input>
@@ -94,10 +94,10 @@
               sortable
               v-slot="props"
             >
-              {{ props.row.proNum }}
+              {{ props.row.quizNum }}
             </b-table-column>
             <b-table-column label="문제" field="문제" sortable v-slot="props">
-              {{ props.row.proDes }}
+              {{ props.row.quizDescribe }}
             </b-table-column>
             <b-table-column
               label="보기 1번"
@@ -105,7 +105,7 @@
               sortable
               v-slot="props"
             >
-              {{ props.row.proSel[0] }}
+              {{ props.row.quizSelection[0] }}
             </b-table-column>
             <b-table-column
               label="보기 2번"
@@ -113,7 +113,7 @@
               sortable
               v-slot="props"
             >
-              {{ props.row.proSel[1] }}
+              {{ props.row.quizSelection[1] }}
             </b-table-column>
             <b-table-column
               label="보기 3번"
@@ -121,19 +121,19 @@
               sortable
               v-slot="props"
             >
-              {{ props.row.proSel[2] }}
+              {{ props.row.quizSelection[2] }}
             </b-table-column>
             <b-table-column label="보기 4번" field="보기 4번" v-slot="props">
-              {{ props.row.proSel[3] }}
+              {{ props.row.quizSelection[3] }}
             </b-table-column>
             <b-table-column label="답" field="보기 4번" v-slot="props">
-              {{ props.row.proAnswer }}
+              {{ props.row.quizAnswer }}
             </b-table-column>
             <b-table-column label="삭제" v-slot="props" centered>
               <b-button
                 type="is-danger"
                 outlined
-                v-on:click="deleteTestProblems(props.row.proId)"
+                v-on:click="deleteTestProblems(props.row.quizId)"
                 position="is-centered"
                 size="is-small"
                 >삭제</b-button
@@ -171,15 +171,14 @@ export default {
       labelPosition: "on-border",
       selectedOptions: [],
       isLoading: false,
-      testNum: this.$route.params.testNum,
+      examNumber: this.$route.params.examNumber,
       test: "",
       spliList: [],
       form: {
-        proNum: 1,
-        proDes: "",
-        proSel: [],
-        proImage: "",
-        proAnswer: ""
+        quizNum: 1,
+        quizDescribe: "",
+        quizSelection: [],
+        quizAnswer: ""
       }
     };
   },
@@ -191,14 +190,13 @@ export default {
   methods: {
     testproblemForm() {
       let formData = new FormData();
-      formData.append("proNum", this.form.proNum);
-      formData.append("proDes", this.form.proDes);
-      formData.append("proSel", this.form.proSel);
-      formData.append("proImage", this.form.proImage);
-      formData.append("proAnswer", this.form.proAnswer);
+      formData.append("quizNum", this.form.quizNum);
+      formData.append("quizDescribe", this.form.quizDescribe);
+      formData.append("quizSelection", this.form.quizSelection);
+      formData.append("quizAnswer", this.form.quizAnswer);
       axios
         .post(
-          "http://localhost:8000/testpro/create/" + this.testNum,
+          "http://localhost:8000/quiz/create/" + this.examNumber,
           formData,
           {
             headers: {
@@ -221,16 +219,15 @@ export default {
         });
     },
     initForm() {
-      this.proNum = "";
-      this.proId = "";
-      this.proDes = "";
-      this.proSel = "";
-      this.proImage = "";
-      this.proAnswer = "";
+      this.quizNum = "";
+      this.quizId = "";
+      this.quizDescribe = "";
+      this.quizSelection = "";
+      this.quizAnswer = "";
     },
     getTestProblems() {
       axios
-        .get("http://localhost:8000/testpro/get?testnum=" + this.testNum, {
+        .get("http://localhost:8000/quiz/get?examNumber=" + this.examNumber, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -244,10 +241,10 @@ export default {
           console.log(e);
         });
     },
-    deleteTestProblems(proid) {
+    deleteTestProblems(quizId) {
       axios
         .delete(
-          `http://localhost:8000/testpro/delete?proid=${proid}&testnum=${this.testNum}`,
+          `http://localhost:8000/quiz/delete?quizId=${quizId}&examNumber=${this.examNumber}`,
           {
             headers: {
               Authorization: sessionStorage.getItem("Authorization")
@@ -292,11 +289,11 @@ export default {
       });
     }
   },
-  deleteTestProblems(testNum) {
+  deleteTestProblems(examNumber) {
     axios
       .delete(
-        "http://localhost:8000/testpro/delete?username=java@educare.com&testnum=" +
-          testNum,
+        "http://localhost:8000/quiz/delete?username=java@ICU.com&examNumber=" +
+          examNumber,
         {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")

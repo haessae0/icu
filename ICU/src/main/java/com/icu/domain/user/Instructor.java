@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("rINSTUCTOR")
+@DiscriminatorValue("ROLE_INSTRUCTOR")
 public class Instructor extends User {
 
     @JsonManagedReference
@@ -30,7 +30,7 @@ public class Instructor extends User {
 
     @Builder
     public Instructor(String username, String password, String fullname, String phoneNumber, List<Exam> examList) {
-        super(username, password, fullname, phoneNumber, "rINSTUCTOR");
+        super(username, password, fullname, phoneNumber, "ROLE_INSTRUCTOR");
         this.examList = examList;
     }
 

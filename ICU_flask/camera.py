@@ -10,9 +10,22 @@ from gaze_tracking import GazeTracking
 import time
 import sys
 import pymysql
+<<<<<<< HEAD
 
 yolo = YoloV3()
 gaze = GazeTracking()
+=======
+import tensorflow as tf
+import numpy as np
+
+from flask import Flask, render_template, Response
+from gaze_tracking import GazeTracking
+from yolo_helper import YoloV3, load_darknet_weights, draw_outputs
+
+yolo = YoloV3()
+gaze = GazeTracking()
+# Yolo3 Darknet 로드
+>>>>>>> main
 load_darknet_weights(yolo, 'yolov3.weights')
 
 class RecordingThread (threading.Thread):

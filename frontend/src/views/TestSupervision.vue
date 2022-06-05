@@ -15,24 +15,24 @@
               응시자의 녹화 영상을 확인하세요.
             </p>
             <h6 class="title is-6">부정행위 감지 시간</h6>
-            <h6 class="subtitle is-6 pb-2">CheatTime:{{ cheatTime }}</h6>
+            <h6 class="subtitle is-6 pb-2">cheatingTime:{{ cheatingTime }}</h6>
             <h6 class="title is-6">응시자 답변</h6>
             <div
               class="pb-2"
-              v-for="(value, index) in testAnswer"
+              v-for="(value, index) in studentAnswer"
               :key="value.key"
             >
               {{ index + 1 }}번: {{ value }}
             </div>
             <h6 class="title is-6">부정행위 유무</h6>
-            <h6 class="subtitle is-6 pb-2">isCheating: {{ isCheating }}</h6>
+            <h6 class="subtitle is-6 pb-2">lier: {{ lier }}</h6>
             <h6 class="title is-6">응시자</h6>
             <h6 class="subtitle is-6 pb-2">{{ userName }}</h6>
             <!-- <br />
             videoname: {{ videoName }} -->
             <b-field label="시험 점수를 입력하세요. 부정행위시 0점">
               <b-field>
-                <b-input v-model="testResult" placeholder="0"></b-input>
+                <b-input v-model="quizResult" placeholder="0"></b-input>
                 <p class="control">
                   <b-button
                     type="is-primary"
@@ -75,14 +75,14 @@ export default {
   },
   data() {
     return {
-      testNum: this.$route.params.testNum,
+      examNumber: this.$route.params.examNumber,
       userName: this.$route.params.userName,
-      testResult: "",
+      quizResult: "",
       studentTest: "",
-      cheatTime: "",
-      isCheating: "",
-      testAnswer: [],
-      userRealName: "",
+      cheatingTime: "",
+      lier: "",
+      studentAnswer: [],
+      fullname: "",
       videoName: ""
     };
   },
@@ -96,13 +96,13 @@ export default {
   },
   methods: {
     //video 정보 가져오기
-    getStudentTest() {
+    getQuizForStudent() {
       axios
         .get(
-          "http://localhost:8000/stutest/get/" +
+          "http://localhost:8000/quizforstudent/get/" +
             this.userName +
             "/" +
-            this.testNum,
+            this.examNumber,
           {
             headers: {
               Authorization: sessionStorage.getItem("Authorization")
@@ -113,13 +113,13 @@ export default {
           this.studentTest = response.data;
           console.log("확인");
           console.log(this.studentTest);
-          this.cheatTime = this.studentTest.cheatTime;
-          this.isCheating = this.studentTest.isCheating;
-          this.testAnswer = this.studentTest.testAnswer;
-          console.log(this.testAnswer);
-          this.userRealName = this.studentTest.userRealName;
+          this.cheatingTime = this.studentTest.cheatingTime;
+          this.lier = this.studentTest.lier;
+          this.studentAnswer = this.studentTest.studentAnswer;
+          console.log(this.studentAnswer);
+          this.fullname = this.studentTest.fullname;
           this.videoName =
-            "http://localhost:8000/tproblemvideo/" + this.studentTest.videoName;
+            "http://localhost:8000/uservideo/" + this.studentTest.videoName;
           //이거 확인해보세요 비디오 이름 잘 가지고 오는지
           console.log(this.videoName);
         })
@@ -134,12 +134,12 @@ export default {
       ] = sessionStorage.getItem("Authorization");
       instance
         .put(
-          "http://localhost:8000/stutest/update-score/" +
+          "http://localhost:8000/quizforstudent/update-score/" +
             this.userName +
             "/" +
-            this.testNum +
+            this.examNumber +
             "/" +
-            this.testResult
+            this.quizResult
         )
         .then(response => {
           this.success();
@@ -166,7 +166,7 @@ export default {
     }
   },
   mounted() {
-    this.getStudentTest();
+    this.getQuizForStudent();
   }
 };
 </script>

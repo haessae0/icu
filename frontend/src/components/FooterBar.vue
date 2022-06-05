@@ -5,7 +5,7 @@
         <div class="level-left">
           <div class="level-item">
             <div class="footer-copyright">
-              <b>&copy; {{ year }}, Educare </b> &mdash; Theme by JustBoil.me
+              <b>&copy; {{ year }}, ICU </b> &mdash; Theme by JustBoil.me
               <span class="tag">v1.4.1</span>
             </div>
           </div>

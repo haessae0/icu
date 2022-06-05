@@ -16,7 +16,7 @@
         <div id="app" class="container">
           <section>
             <b-table
-              :data="isEmpty ? [] : studenttest"
+              :data="isEmpty ? [] : quizlist"
               :hoverable="isHoverable"
             >
               <b-table-column
@@ -46,7 +46,7 @@
                   <span
                     v-if="props.row.testStatus == 'T'"
                     class="tag is-danger"
-                    v-on:click="takeStudentTest(props.row.testNum)"
+                    v-on:click="takeQuizForStudent(props.row.testNum)"
                   >
                     시험 응시 하기
                   </span>
@@ -102,7 +102,7 @@ export default {
       userName: this.$store.state.userName,
       userRole: this.$store.state.userRole,
 
-      studenttest: ""
+      quizlist: ""
     };
   },
   computed: {
@@ -112,9 +112,9 @@ export default {
     ...mapState(["userName", "userRole"])
   },
   methods: {
-    getStudentTest() {
+    getQuizForStudent() {
       axios
-        .get("http://localhost:8000/stutest/get/" + this.userName, {
+        .get("http://localhost:8000/quizforstudent/get/" + this.userName, {
           headers: {
             Authorization: sessionStorage.getItem("Authorization")
           }
@@ -128,16 +128,16 @@ export default {
           console.log(e);
         });
     },
-    takeStudentTest(testNum) {
+    takeQuizForStudent(examNumber) {
       //  수정버튼 클릭시 ModifyTest로 이동
       return this.$router.push({
-        name: "TestGuide",
-        params: { testNum: testNum }
+        name: "examDescribe",
+        params: { examNumber: examNumber }
       });
     }
   },
   mounted() {
-    this.getStudentTest();
+    this.getQuizForStudent();
   }
 };
 </script>

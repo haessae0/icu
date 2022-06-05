@@ -2,7 +2,7 @@
 	<header>
 		<div>
 			<router-link :to="logoLink" class="logo">
-				EduCare
+				ICU
 			</router-link>
 		</div>
 		<div class="navigations">

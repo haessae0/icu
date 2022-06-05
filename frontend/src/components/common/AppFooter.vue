@@ -1,7 +1,7 @@
 <template>
 	<footer>
 		<template>
-			<div>@ 2021 Educare Application</div>
+			<div>@ 2022 ICU Application</div>
 		</template>
 	</footer>
 </template>
