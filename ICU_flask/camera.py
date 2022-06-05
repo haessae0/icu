@@ -20,7 +20,7 @@ class RecordingThread (threading.Thread):
         threading.Thread.__init__(self)
         self.name = name
         self.isRunning = True
-        self.cap = camera 
+        self.cap = camera
         fourcc = cv2.VideoWriter_fourcc(*'avc1') 
         self.out = cv2.VideoWriter('./static/video.mp4',fourcc, 20.0, (640,480))
 
@@ -51,24 +51,24 @@ class VideoCamera(object):
         self.cap.release()
     
     def get_frame(self):
+        doubt_eye=0
         while(True):
             ret, frame = self.cap.read()
             if ret == False:
                 break
-            
+
             gaze.refresh(frame)
             frame = gaze.annotated_frame()
             text = ""
 
             if gaze.is_blinking():
                 text = " "
-
             elif gaze.is_right():
                 text = "Looking right"
-
+                doubt_eye=doubt_eye+1
             elif gaze.is_left():
                 text = "Looking left"
-
+                doubt_eye=doubt_eye+1
             elif gaze.is_center():
                 text = "Looking center"
             
@@ -87,23 +87,25 @@ class VideoCamera(object):
             img = img.astype(np.float32)
             img = np.expand_dims(img, 0)
             img = img / 255
+            
             class_names = [c.strip() for c in open("models/classes.TXT").readlines()]
             boxes, scores, classes, nums = yolo(img)
             print("nums:",nums)
             count=0
 
+
             if self.is_record:
                 elapsed_time = time.time() - self.start_time
             for i in range(nums[0]):
-                temp = classes[0][i]
-                print("nums[i]:",nums[i])
-                if int(classes[0][i] == 0):
+                if int(classes[0][i] == 0 or classes[0][i] > 1):
                     count +=1
-                if self.is_record and int(temp==62 or temp == 63 or temp==67 or temp==73): #tvmonitor, laptop, cell phone, book
-                    self.timelist.append(time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
-            if self.is_record and count > 1: #count != 1: 'No person detected' & 'More than one person detected'
+
+            if count > 1 : #count != 1: 'No person detected' & 'More than one person detected'
                 self.timelist.append(time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
-            frame = draw_outputs(frame, (boxes, scores, classes, nums), class_names)
+            elif doubt_eye > 0: #count != 1: 'No person detected' & 'More than one person detected'
+                self.timelist.append(time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
+
+            frame = draw_outputs(frame, (boxes, scores, classes,nums), class_names)
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             return buffer.tobytes()
