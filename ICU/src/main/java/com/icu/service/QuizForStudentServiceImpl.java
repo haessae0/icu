@@ -30,7 +30,7 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
     private final QuizForStudentRepository quizForStudentRepository;
 
     public QuizForStudentServiceImpl(ExamRepository examRepository, StudentRepository studentRepository,
-                                     QuizForStudentRepository quizForStudentRepository) {
+            QuizForStudentRepository quizForStudentRepository) {
         this.examRepository = examRepository;
         this.studentRepository = studentRepository;
         this.quizForStudentRepository = quizForStudentRepository;
@@ -157,9 +157,10 @@ public class QuizForStudentServiceImpl implements QuizForStudentService {
             String videoname;
 
             try {
-                videoname = "video.mp4";
+                videoname = quizForStudentDto.getExamNumber() + "_" + quizForStudentDto.getUsername() + "_"
+                        + "video.mp4";
                 multipartFile.transferTo(new File(System.getProperty("user.dir")
-                        + "/Users/haessae0/Desktop/icu/ICU/src/main/webapp/userVideo" + videoname));
+                        + "\\ICU\\src\\main\\webapp\\userVideo\\" + videoname));
                 logger.info("{}번 문제 녹화파일 등록 성공", quizForStudentDto.getExamNumber());
                 quizForStudent.setVideoName(videoname);
             } catch (IllegalStateException | IOException exception) {

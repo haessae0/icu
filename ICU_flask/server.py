@@ -14,9 +14,9 @@ status = 'true'
 time_list = None
 
 userId = None
-testNum = None
-conn = pymysql.connect(host='localhost', user='root',
-                       password='root', db='educare', charset='utf8')
+examNumber = None
+conn = pymysql.connect(host='localhost', user='minsu',
+                       password='haessae0', db='icu', charset='utf8')
 
 
 @app.route('/<inputusername>/<inputtestnum>')
@@ -26,36 +26,36 @@ def index(inputusername, inputtestnum):
     global conn
 
     cur = conn.cursor()
-    cur.execute("SELECT * FROM testproblem where test_num = %s", inputtestnum)
+    cur.execute("SELECT * FROM quiz where exam_num = %s", inputtestnum)
 
     global userId
-    global testNum
+    global examNumber
     userId = inputusername
-    testNum = inputtestnum
+    examNumber = inputtestnum
 
     fetchdata = cur.fetchall()
     print(len(fetchdata))
-    prosel_list = []
-    idx = 0
+    quizSelection_list = []
+    index = 0
     for problem in fetchdata:
 
-        prosel_list.append([])
-        prob_list = problem[5].split('/')
-        prosel_list[idx].append(problem[4])
-        prosel_list[idx].append(problem[2])
-        prosel_list[idx].append(prob_list[0])
-        prosel_list[idx].append(prob_list[1])
-        prosel_list[idx].append(prob_list[2])
-        prosel_list[idx].append(prob_list[3])
-        idx += 1
+        quizSelection_list.append([])
+        quiz_list = problem[4].split('/')
+        quizSelection_list[index].append(problem[4])
+        quizSelection_list[index].append(problem[2])
+        quizSelection_list[index].append(quiz_list[0])
+        quizSelection_list[index].append(quiz_list[1])
+        quizSelection_list[index].append(quiz_list[2])
+        quizSelection_list[index].append(quiz_list[3])
+        index += 1
 
     cur.execute(
-        "SELECT start_time, end_time FROM test WHERE test_num=%s", testNum)
+        "SELECT open_time, close_time FROM exam WHERE exam_num=%s", examNumber)
     fetchdata2 = cur.fetchall()
-    startTime = fetchdata2[0][0]
-    endTime = fetchdata2[0][1]
+    openTime = fetchdata2[0][0]
+    closeTime = fetchdata2[0][1]
 
-    return render_template('index.html', data_list=prosel_list, user_name=userId, test_num=testNum, start_time=startTime, end_time=endTime)
+    return render_template('index.html', data_list=quizSelection_list, user_name=userId, exam_num=examNumber, open_time=openTime, end_time=closeTime)
 
 
 @app.route('/record_status', methods=['POST'])
@@ -63,7 +63,7 @@ def record_status():
     global video_camera
     global time_list
     global userId
-    global testNum
+    global examNumber
     global conn
 
     if video_camera != None:
@@ -77,18 +77,18 @@ def record_status():
             video_camera.stop_record()
 
             try:
-                if time_list != None and userId != None and testNum != None:
+                if time_list != None and userId != None and examNumber != None:
                     tmpstr = ''
 
                     for time in time_list:
                         tmpstr += time+'/'
 
                     if tmpstr == '':
-                        sql = "UPDATE studenttest SET cheat_time=%s, is_cheating=%s where stu_id=%s and test_num=%s"
-                        curs.execute(sql, ('', 'False', userId, testNum))
+                        sql = "UPDATE quizforstudent SET cheating_time=%s, lier=%s where stu_id=%s and exam_num=%s"
+                        curs.execute(sql, ('', 'False', userId, examNumber))
                     else:
-                        sql = "UPDATE studenttest SET cheat_time=%s, is_cheating=%s where stu_id=%s and test_num=%s"
-                        curs.execute(sql, (tmpstr, 'True', userId, testNum))
+                        sql = "UPDATE quizforstudent SET cheating_time=%s, lier=%s where stu_id=%s and exam_num=%s"
+                        curs.execute(sql, (tmpstr, 'True', userId, examNumber))
 
                     conn.commit()
                     conn.close()

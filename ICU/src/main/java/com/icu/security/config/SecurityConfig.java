@@ -43,26 +43,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf().disable() // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .exceptionHandling() // 예외처리 기능
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증 실패시 처리
+                .accessDeniedHandler(jwtAccessDeniedHandler) // 인가 실패시 처리
                 .and()
-                .sessionManagement()
+                .sessionManagement() // 세션을 사용하지 않기 때문에 STATELESS로 설정
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
+                .authorizeRequests() // Token이 없어도 호출할 수 있도록 허용
                 .antMatchers("/user/signin").permitAll()
                 .antMatchers("/user/signup").permitAll()
-                .antMatchers("/stutest/update-mytest").permitAll()
-                .antMatchers("/userimg/**").permitAll()
-                .antMatchers("/tproblemvideo/video.mp4").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/quizforstudent/update-quiz").permitAll()
+                .antMatchers("/userVideo/video.mp4").permitAll()
+                .anyRequest().authenticated() // 나머지는 권한 검증
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .apply(new JwtSecurityConfig(tokenProvider)); // 사용자 정의 설정
     }
 }
