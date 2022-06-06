@@ -43,12 +43,9 @@ class RecordingThread (threading.Thread):
 
 class VideoCamera(object):
     def __init__(self, start_time, time_list):
-        # Open a camera
         self.cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-        # Initialize video recording environment
         self.is_record = False
         self.out = None
-        # Thread for recording
         self.recordingThread = None
         self.start_time = start_time
         self.timelist = time_list
@@ -81,9 +78,6 @@ class VideoCamera(object):
             cv2.putText(frame, text, (90, 60),
                         cv2.FONT_HERSHEY_DUPLEX, 1.6, (147, 58, 31), 2)
 
-            #cv2.putText(frame, "Left pupil:  " + str(left_pupil), (90, 130), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
-            #cv2.putText(frame, "Right pupil: " + str(right_pupil), (90, 165), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
-
             cv2.imshow("Demo", frame)
 
             if cv2.waitKey(1) == 27:
@@ -107,10 +101,10 @@ class VideoCamera(object):
                 if int(classes[0][i] == 0 or classes[0][i] > 1):
                     count += 1
 
-            if count > 1:  # count != 1: 'No person detected' & 'More than one person detected'
+            if count > 1:
                 self.timelist.append(time.strftime(
                     "%H:%M:%S", time.gmtime(elapsed_time)))
-            elif doubt_eye > 0:  # count != 1: 'No person detected' & 'More than one person detected'
+            elif doubt_eye > 0:
                 self.timelist.append(time.strftime(
                     "%H:%M:%S", time.gmtime(elapsed_time)))
 

@@ -41,7 +41,7 @@ def index(inputusername, inputtestnum):
 
         quizSelection_list.append([])
         quiz_list = problem[4].split('/')
-        quizSelection_list[index].append(problem[4])
+        quizSelection_list[index].append(problem[3])
         quizSelection_list[index].append(problem[2])
         quizSelection_list[index].append(quiz_list[0])
         quizSelection_list[index].append(quiz_list[1])
@@ -55,7 +55,7 @@ def index(inputusername, inputtestnum):
     openTime = fetchdata2[0][0]
     closeTime = fetchdata2[0][1]
 
-    return render_template('index.html', data_list=quizSelection_list, user_name=userId, exam_num=examNumber, open_time=openTime, end_time=closeTime)
+    return render_template('index.html', data_list=quizSelection_list, user_name=userId, exam_num=examNumber, open_time=openTime, close_time=closeTime)
 
 
 @app.route('/record_status', methods=['POST'])

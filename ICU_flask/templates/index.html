@@ -13,12 +13,10 @@
   </head>
 
   <body>
-    <!-- 헤더 네비게이션 -->
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
           <p class="title is-5">ICU</p>
-          <!-- <img src="../assets/flasklogo.png" width="112" height="28"> -->
         </a>
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
           <span aria-hidden="true"></span>
@@ -30,7 +28,6 @@
     </nav>
     <div id="app" class="container pt-3 mt-3">
       <h1 class="title pt-3">시험보기</h1>
-      <!-- Buefy components goes here -->
       <p class="has-text-right" id="timer"></p>
       <div class="tile is-ancestor">
         <div class="tile is-4 is-vertical is-parent">
@@ -122,24 +119,18 @@
 
         const vueApp = new Vue({
           el: '#app',
-          //axios 들어가기 form data post로 보내고, get으로 문제 출력하고, 영상 파일에 관련된거 입력하고
-          //spring boot post json key-> answer, 문제, 
           data: {
             form: {
               username: '{{user_name}}',
               studentAnswer: [],
               status: 'C',
               examNumber: '{{exam_num}}',
-              // radio: "",
             },
 
           },
           methods: {
             handleFileUpload() {
               this.file = this.$refs.file.files[0];
-              //tempfile = new FileReader();
-              //tempfile = tempfile.readAsArrayBuffer();
-              //this.file = tempfile;
             },
             submit() {
               let formData = new FormData();
